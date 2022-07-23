@@ -32,8 +32,8 @@ import "../styles/globals.css";
 import { RecycLensPage } from "@utils/types/common";
 
 // Utils
-import createEmotionCache from "@utils/createEmotionCache";
-import getDesignTokens from "@utils/getDesignTokens";
+import createEmotionCache from "@utils/emotion";
+import getDesignTokens from "@utils/theme";
 
 const clientSideEmotionCache = createEmotionCache();
 
