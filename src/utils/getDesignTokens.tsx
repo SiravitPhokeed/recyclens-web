@@ -2,30 +2,43 @@
 import { PaletteMode } from "@mui/material";
 import { ThemeOptions } from "@mui/system/createTheme";
 
+const sansFont = "-apple-system, BlinkMacSystemFont, Rubik";
+const displayFont = "Grandstander, -apple-system-headline, BlinkMacSystemFont";
+
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   typography: {
-    fontFamily: "-apple-system, BlinkMacSystemFont, Rubik",
+    fontFamily: sansFont,
     h1: {
-      fontFamily: "Grandstander, -apple-system-headline, BlinkMacSystemFont",
+      fontSize: "3.5rem",
+      fontFamily: displayFont,
     },
     h2: {
-      fontFamily: "Grandstander, -apple-system-headline, BlinkMacSystemFont",
+      fontSize: "2rem",
+      fontFamily: displayFont,
     },
     h3: {
-      fontFamily: "Grandstander, -apple-system-headline, BlinkMacSystemFont",
+      fontSize: "1.75rem",
+      fontFamily: displayFont,
     },
     h4: {
-      fontFamily: "Grandstander, -apple-system-headline, BlinkMacSystemFont",
+      fontSize: "1.5rem",
+      fontFamily: displayFont,
     },
     h5: {
-      fontFamily: "Grandstander, -apple-system-headline, BlinkMacSystemFont",
+      fontSize: "1.25rem",
+      fontFamily: displayFont,
     },
     h6: {
-      fontFamily: "Grandstander, -apple-system-headline, BlinkMacSystemFont",
+      fontSize: "1.125rem",
+      fontFamily: displayFont,
+    },
+    subtitle1: {
+      fontSize: "1.5rem",
+      fontFamily: displayFont,
     },
     button: {
       fontSize: "1rem",
-      fontFamily: "Grandstander, -apple-system, BlinkMacSystemFont",
+      fontFamily: displayFont,
       textTransform: "none",
     },
   },
@@ -43,7 +56,7 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
           },
           background: {
             default: "#FEFCF8",
-            paper: "#FEFCF8",
+            paper: "#F5F4EE",
           },
           text: {
             primary: "#1B1C1A",
@@ -90,3 +103,4 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
 });
 
 export default getDesignTokens;
+

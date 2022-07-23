@@ -15,12 +15,16 @@ import {
 
 // Components
 import MaterialSymbol from "@components/MaterialSymbol";
+import Link from "@components/Link";
+
+// Types
+import { RecycLensPage } from "@utils/types/common";
 
 const Layout = ({
-  title,
+  appBar,
   children,
 }: {
-  title: string;
+  appBar: RecycLensPage["appBar"];
   children: ReactNode;
 }): JSX.Element => {
   const router = useRouter();
@@ -33,10 +37,16 @@ const Layout = ({
             <MaterialSymbol icon="menu" />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {title || "RecycLens"}
+            {appBar?.title || "RecycLens"}
           </Typography>
-          <IconButton size="large" edge="start" color="inherit">
-            <MaterialSymbol icon="more_vert" />
+          <IconButton
+            LinkComponent={Link}
+            href="/scan"
+            size="large"
+            edge="start"
+            color="inherit"
+          >
+            <MaterialSymbol icon="photo_camera" />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -48,16 +58,22 @@ const Layout = ({
       >
         <BottomNavigation showLabels value={router.pathname}>
           <BottomNavigationAction
-            label="Recents"
-            icon={<MaterialSymbol icon="restore" />}
+            label="Home"
+            icon={<MaterialSymbol icon="home" />}
+            LinkComponent={Link}
+            href="/"
           />
           <BottomNavigationAction
-            label="Favorites"
-            icon={<MaterialSymbol icon="favorite" />}
+            label="Scan"
+            icon={<MaterialSymbol icon="photo_camera" />}
+            LinkComponent={Link}
+            href="/scan"
           />
           <BottomNavigationAction
-            label="Nearby"
-            icon={<MaterialSymbol icon="pin_drop" />}
+            label="Search"
+            icon={<MaterialSymbol icon="search" />}
+            LinkComponent={Link}
+            href="/local-guides"
           />
         </BottomNavigation>
       </Paper>
