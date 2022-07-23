@@ -47,9 +47,7 @@ function App({
   emotionCache: EmotionCache;
 }) {
   emotionCache = clientSideEmotionCache;
-
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-
   const theme = useMemo(
     () =>
       createTheme(
@@ -57,6 +55,7 @@ function App({
       ),
     [prefersDarkMode]
   );
+
   return (
     <MotionConfig reducedMotion="user">
       <CacheProvider value={emotionCache}>

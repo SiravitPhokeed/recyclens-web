@@ -30,6 +30,24 @@ const Layout = ({
 }): JSX.Element => {
   const router = useRouter();
 
+  const navItems: { href: string; label: string; icon: JSX.Element }[] = [
+    {
+      href: "/",
+      label: "Home",
+      icon: <MaterialSymbol icon="home" />,
+    },
+    {
+      href: "/scan",
+      label: "Scan",
+      icon: <MaterialSymbol icon="photo_camera" />,
+    },
+    {
+      href: "/local-guides",
+      label: "Search",
+      icon: <MaterialSymbol icon="search" />,
+    },
+  ];
+
   return (
     <AnimatePresence
       exitBeforeEnter
@@ -94,25 +112,29 @@ const Layout = ({
           sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
           elevation={3}
         >
-          <BottomNavigation showLabels value={router.pathname}>
-            <BottomNavigationAction
-              label="Home"
-              icon={<MaterialSymbol icon="home" />}
-              LinkComponent={Link}
-              href="/"
-            />
-            <BottomNavigationAction
-              label="Scan"
-              icon={<MaterialSymbol icon="photo_camera" />}
-              LinkComponent={Link}
-              href="/scan"
-            />
-            <BottomNavigationAction
-              label="Search"
-              icon={<MaterialSymbol icon="search" />}
-              LinkComponent={Link}
-              href="/local-guides"
-            />
+          <BottomNavigation
+            showLabels
+            value={
+              // Special case for Home since every page `href`s start with `/`
+              router.pathname == "/"
+                ? 0
+                : // Find index in `navItems`
+                  navItems
+                    .slice(1) // Ignore Home
+                    .findIndex((navItem) =>
+                      router.pathname.startsWith(navItem.href)
+                    ) + 1
+            }
+          >
+            {navItems.map((navItem) => (
+              <BottomNavigationAction
+                key={navItem.label}
+                label={navItem.label}
+                icon={navItem.icon}
+                LinkComponent={Link}
+                href={navItem.href}
+              />
+            ))}
           </BottomNavigation>
         </Paper>
       </div>

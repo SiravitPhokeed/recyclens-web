@@ -84,6 +84,7 @@ const LocalGuides: RecycLensPage = () => {
           }}
           label="Search"
           variant="outlined"
+          type="search"
         />
       </Stack>
       <Stack spacing={2} className="p-4">
@@ -106,10 +107,7 @@ const LocalGuides: RecycLensPage = () => {
                       style={{ backgroundColor: `#${category.color}` }}
                     />
                   </Stack>
-                  <MaterialSymbol
-                    icon="arrow_forward"
-                    className="text-light-primary dark:text-dark-primary"
-                  />
+                  <MaterialSymbol icon="arrow_forward" />
                 </Stack>
               </Link>
             </ButtonBase>
