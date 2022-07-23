@@ -79,7 +79,7 @@ const Layout = ({
                 <MaterialSymbol icon="menu" />
               </IconButton>
             )}
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography variant="h3" component="div" sx={{ flexGrow: 1 }}>
               {appBar?.title || "RecycLens"}
             </Typography>
             {router.asPath != "/scan" && (
@@ -103,6 +103,8 @@ const Layout = ({
           initial={{ y: -10 }}
           animate={{ y: 0 }}
           exit={{ y: -10 }}
+          className="md:my-6 md:mx-auto md:max-w-xl md:overflow-hidden
+            md:rounded-3xl"
         >
           {children}
         </motion.div>

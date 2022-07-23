@@ -27,7 +27,10 @@ const WebcamWControls = () => {
   // Device viewport witdth
   // (for ensuring the viewfinder perfectly fits the screen)
   const [clientWidth, setClientWidth] = useState<number>(360);
-  useEffect(() => setClientWidth(window.innerWidth), []);
+  useEffect(
+    () => setClientWidth(window.innerWidth > 576 ? 576 : window.innerWidth),
+    []
+  );
 
   // List of the available cameras on the client device
   const [clientCameras, setClientCameras] = useState<MediaDeviceInfo[]>([]);
@@ -67,7 +70,7 @@ const WebcamWControls = () => {
   return (
     <>
       <Paper
-        className="relative overflow-hidden rounded-none"
+        className="relative overflow-hidden rounded-none md:rounded-3xl"
         style={{ height: clientWidth }}
       >
         {/* Client camera label */}
@@ -97,7 +100,8 @@ const WebcamWControls = () => {
           direction="row"
           spacing={1}
           justifyContent="center"
-          className="h-30 absolute bottom-0 w-full bg-gradient-to-t from-[#00000080] to-transparent py-2"
+          className="h-30 absolute bottom-0 w-full bg-gradient-to-t
+            from-[#00000080] to-transparent py-2"
         >
           {/* Switch camera */}
           <IconButton

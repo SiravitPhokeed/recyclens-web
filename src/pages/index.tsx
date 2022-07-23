@@ -11,8 +11,8 @@ const Welcome: RecycLensPage = () => {
   return (
     <Stack>
       <Paper
-        className="h-60 bg-[url('/images/welcome-light.png')] bg-cover bg-bottom p-4
-          dark:bg-[url('/images/welcome-dark.png')]"
+        className="h-60 bg-[url('/images/welcome-light.svg')] bg-cover bg-bottom p-4
+          dark:bg-[url('/images/welcome-dark.svg')]"
       >
         <Stack>
           <Typography variant="h1">RecycLens</Typography>
