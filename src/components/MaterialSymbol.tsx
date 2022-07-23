@@ -1,5 +1,17 @@
-const MaterialSymbol = ({ icon }: { icon: string }): JSX.Element => (
-  <i className="material-symbols" translate="no">
+const MaterialSymbol = ({
+  icon,
+  size,
+}: {
+  icon: string;
+  size?: "normal" | "large";
+}): JSX.Element => (
+  <i
+    className={[
+      "material-symbols",
+      size == "large" ? "material-symbols--header" : "",
+    ].join(" ")}
+    translate="no"
+  >
     {icon}
   </i>
 );
