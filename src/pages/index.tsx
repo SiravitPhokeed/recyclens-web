@@ -1,8 +1,10 @@
-// External libraries
-import type { NextPage } from "next";
+// Types
+import { RecycLensPage } from "@utils/types/common";
 
-const Welcome: NextPage = () => {
-  return <div></div>;
+const Welcome: RecycLensPage = () => {
+  return <div />;
 };
+
+Welcome.title = "Welcome";
 
 export default Welcome;

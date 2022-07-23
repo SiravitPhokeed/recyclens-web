@@ -28,14 +28,24 @@ import "@fontsource/sarabun/700.css";
 // Stylesheets
 import "../styles/globals.css";
 
+// Types
+import { RecycLensPage } from "@utils/types/common";
+
 // Utils
 import createEmotionCache from "@utils/createEmotionCache";
 import getDesignTokens from "@utils/getDesignTokens";
 
 const clientSideEmotionCache = createEmotionCache();
 
-function App(props: AppProps & { emotionCache: EmotionCache }) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+function App({
+  Component,
+  emotionCache,
+  pageProps,
+}: Omit<AppProps, "Component"> & {
+  Component: RecycLensPage;
+  emotionCache: EmotionCache;
+}) {
+  emotionCache = clientSideEmotionCache;
 
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
@@ -50,7 +60,7 @@ function App(props: AppProps & { emotionCache: EmotionCache }) {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Layout>
+        <Layout title={Component.title}>
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>
