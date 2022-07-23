@@ -60,7 +60,7 @@ function App({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Layout title={Component.title}>
+        <Layout appBar={Component.appBar}>
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>
