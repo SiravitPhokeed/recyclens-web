@@ -33,25 +33,47 @@ const Layout = ({
     <div className="pb-14">
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
-            <MaterialSymbol icon="menu" />
-          </IconButton>
+          {appBar?.backGoesTo ? (
+            <IconButton
+              LinkComponent={Link}
+              href={appBar.backGoesTo}
+              size="large"
+              edge="start"
+              color="inherit"
+              sx={{ mr: 2 }}
+            >
+              <MaterialSymbol icon="arrow_back" />
+            </IconButton>
+          ) : (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              sx={{ mr: 2 }}
+            >
+              <MaterialSymbol icon="menu" />
+            </IconButton>
+          )}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {appBar?.title || "RecycLens"}
           </Typography>
-          <IconButton
-            LinkComponent={Link}
-            href="/scan"
-            size="large"
-            edge="start"
-            color="inherit"
-          >
-            <MaterialSymbol icon="photo_camera" />
-          </IconButton>
+          {router.asPath != "/scan" && (
+            <IconButton
+              LinkComponent={Link}
+              href="/scan"
+              size="large"
+              edge="start"
+              color="inherit"
+            >
+              <MaterialSymbol icon="photo_camera" />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
       <Toolbar />
+
       {children}
+      
       <Paper
         sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
         elevation={3}
