@@ -1,6 +1,9 @@
 // MUI Components
 import { Button, Paper, Stack, Typography } from "@mui/material";
 
+// Components
+import Link from "@components/Link";
+
 // Types
 import { RecycLensPage } from "@utils/types/common";
 
@@ -16,7 +19,10 @@ const Welcome: RecycLensPage = () => {
           <Typography variant="subtitle1">Recyling. Localized.</Typography>
         </Stack>
       </Paper>
-      <Paper className="rounded-none bg-light-background p-4 dark:bg-dark-background">
+      <Paper
+        className="rounded-none bg-light-background p-4
+          dark:bg-dark-background"
+      >
         <Stack className="mb-6">
           <Typography variant="h2">Point. Tap. Know.</Typography>
           <Typography variant="body1">
@@ -24,7 +30,9 @@ const Welcome: RecycLensPage = () => {
           </Typography>
         </Stack>
         <Stack direction="row" spacing={2} justifyContent="flex-end">
-          <Button variant="contained">Scan</Button>
+          <Button variant="contained" LinkComponent={Link} href="/scan">
+            Scan
+          </Button>
         </Stack>
       </Paper>
       <Paper className="rounded-none p-4">
@@ -36,7 +44,9 @@ const Welcome: RecycLensPage = () => {
           </Typography>
         </Stack>
         <Stack direction="row" spacing={2} justifyContent="flex-end">
-          <Button variant="contained">Search</Button>
+          <Button variant="contained" LinkComponent={Link} href="/local-guides">
+            Search
+          </Button>
         </Stack>
       </Paper>
     </Stack>
