@@ -139,7 +139,12 @@ const WebcamWControls = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
             >
-              <Image src={capturedImage} alt="" layout="fill" />
+              <Image
+                src={capturedImage}
+                layout="fill"
+                objectFit="contain"
+                alt="Captured image of trash."
+              />
             </motion.div>
           )}
         </AnimatePresence>
