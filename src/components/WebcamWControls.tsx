@@ -1,6 +1,13 @@
 // External libraries
-import { useEffect, useReducer, useState } from "react";
+import {
+  MutableRefObject,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import Webcam from "react-webcam";
+import Image from "next/image";
 
 // Material UI
 import {
@@ -14,6 +21,7 @@ import {
 
 // Components
 import MaterialSymbol from "@components/MaterialSymbol";
+import { AnimatePresence, motion } from "framer-motion";
 
 const WebcamWControls = () => {
   // Device viewport witdth
@@ -46,6 +54,16 @@ const WebcamWControls = () => {
     false
   );
 
+  // Captured image
+  const webcamRef: MutableRefObject<Webcam | undefined> = useRef();
+  const [capturedImage, setCapturedImage] = useState<string | null>();
+
+  useEffect(() => {
+    if (capturedImage) {
+      setTimeout(() => setCapturedImage(null), 3000);
+    }
+  }, [capturedImage]);
+
   return (
     <>
       <Paper
@@ -62,6 +80,7 @@ const WebcamWControls = () => {
         {/* Viewfinder */}
         <Webcam
           audio={false}
+          ref={webcamRef as any}
           height={clientWidth}
           screenshotFormat="image/jpeg"
           width={clientWidth}
@@ -90,7 +109,14 @@ const WebcamWControls = () => {
           </IconButton>
 
           {/* Take photo */}
-          <Button variant="contained">
+          <Button
+            variant="contained"
+            onClick={() =>
+              setCapturedImage(() => {
+                if (webcamRef.current) return webcamRef.current.getScreenshot();
+              })
+            }
+          >
             <MaterialSymbol icon="camera" />
           </Button>
 
@@ -99,6 +125,20 @@ const WebcamWControls = () => {
             <MaterialSymbol icon="flip" />
           </IconButton>
         </Stack>
+
+        {/* Photo preview */}
+        <AnimatePresence>
+          {capturedImage && (
+            <motion.div
+              className="absolute inset-0 z-30"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+            >
+              <Image src={capturedImage} alt="" layout="fill" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Paper>
     </>
   );

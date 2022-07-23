@@ -1,5 +1,6 @@
 // External libraries
 import React, { useState } from "react";
+import Link from "next/link";
 
 // MUI Components
 import {
@@ -11,11 +12,37 @@ import {
   Typography,
   TextField,
   InputAdornment,
+  Divider,
 } from "@mui/material";
+import ButtonBase from "@mui/material/ButtonBase";
+
+// Components
+import MaterialSymbol from "@components/MaterialSymbol";
 
 // Types
 import { RecycLensPage } from "@utils/types/common";
-import MaterialSymbol from "@components/MaterialSymbol";
+
+// Dummybase
+const categories = [
+  {
+    id: 1,
+    name: "Aluminium Foil",
+    color: "071776",
+    reuse: false,
+  },
+  {
+    id: 2,
+    name: "Biological",
+    color: "13841A",
+    reuse: false,
+  },
+  {
+    id: 3,
+    name: "Book",
+    color: "EAC61A",
+    reuse: true,
+  },
+];
 
 // Page
 const LocalGuides: RecycLensPage = () => {
@@ -61,8 +88,32 @@ const LocalGuides: RecycLensPage = () => {
       </Stack>
       <Stack spacing={2} className="p-4">
         <Typography variant="h2">By Category</Typography>
-        <Stack>
-          <Typography></Typography>
+
+        <Stack divider={<Divider />}>
+          {categories.map((category) => (
+            <ButtonBase key={category.id} className="block py-2">
+              <Link href={`/local-guides/category/${category.id}/th-bkk`}>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  justifyContent="space-between"
+                >
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography variant="body1">{category.name}</Typography>
+                    <div
+                      className="border-text-primary h-4 w-4 rounded-full border-2
+                        dark:border-solid"
+                      style={{ backgroundColor: `#${category.color}` }}
+                    />
+                  </Stack>
+                  <MaterialSymbol
+                    icon="arrow_forward"
+                    className="text-light-primary dark:text-dark-primary"
+                  />
+                </Stack>
+              </Link>
+            </ButtonBase>
+          ))}
         </Stack>
       </Stack>
     </Stack>
