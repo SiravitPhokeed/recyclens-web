@@ -57,11 +57,7 @@ const LocalGuides: RecycLensPage = () => {
           place to donate your unwanted items.
         </Typography>
         <FormControl fullWidth>
-          <InputLabel id="location-select-label">
-            <Typography className="bg-light-background dark:bg-dark-background">
-              Location
-            </Typography>
-          </InputLabel>
+          <InputLabel id="location-select-label">Location</InputLabel>
           <Select
             labelId="location-select-label"
             id="location-select"

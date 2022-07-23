@@ -65,7 +65,7 @@ const Layout = ({
                 size="large"
                 edge="start"
                 color="inherit"
-                sx={{ mr: 2 }}
+                sx={{ mr: 1 }}
               >
                 <MaterialSymbol icon="arrow_back" />
               </IconButton>
@@ -74,7 +74,7 @@ const Layout = ({
                 size="large"
                 edge="start"
                 color="inherit"
-                sx={{ mr: 2 }}
+                sx={{ mr: 1 }}
               >
                 <MaterialSymbol icon="menu" />
               </IconButton>
