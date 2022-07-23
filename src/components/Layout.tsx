@@ -15,10 +15,10 @@ import {
 
 // Components
 import MaterialSymbol from "@components/MaterialSymbol";
+import Link from "@components/Link";
 
 // Types
 import { RecycLensPage } from "@utils/types/common";
-import Link from "next/link";
 
 const Layout = ({
   appBar,
@@ -39,7 +39,13 @@ const Layout = ({
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {appBar?.title || "RecycLens"}
           </Typography>
-          <IconButton href="/scan" size="large" edge="start" color="inherit">
+          <IconButton
+            LinkComponent={Link}
+            href="/scan"
+            size="large"
+            edge="start"
+            color="inherit"
+          >
             <MaterialSymbol icon="photo_camera" />
           </IconButton>
         </Toolbar>
@@ -54,14 +60,20 @@ const Layout = ({
           <BottomNavigationAction
             label="Home"
             icon={<MaterialSymbol icon="home" />}
+            LinkComponent={Link}
+            href="/"
           />
           <BottomNavigationAction
             label="Scan"
             icon={<MaterialSymbol icon="photo_camera" />}
+            LinkComponent={Link}
+            href="/scan"
           />
           <BottomNavigationAction
             label="Search"
             icon={<MaterialSymbol icon="search" />}
+            LinkComponent={Link}
+            href="/local-guides"
           />
         </BottomNavigation>
       </Paper>
