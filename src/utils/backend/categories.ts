@@ -55,6 +55,8 @@ export async function getCategoryDetails(
         shouldRepair: data.should_repair,
       },
       bin: {
+        name: data.bin.name,
+        localName: data.bin.name_local,
         hexColor: data.bin.hex_color,
         image: data.bin.image,
       },

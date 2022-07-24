@@ -112,14 +112,44 @@ const BinSection = ({
     </Stack>
 
     <Typography>
-      For smaller numbers, use the <strong>PLACEHOLDER</strong>. In {city}, the
+      For smaller numbers, use the <strong>{bin.name}</strong>. In {city}, the
       bin is{" "}
-      <span
-        className="inline-block h-4 w-4 rounded-full"
-        style={{ backgroundColor: bin.hexColor }}
-      />{" "}
-      <strong>PLACEHOLDER</strong> and <strong>labelled “PLACEHOLDER.”</strong>
+      <strong>
+        colored{" "}
+        <span
+          className="inline-block h-4 w-4 rounded-full
+            dark:border-2 dark:border-solid dark:border-dark-text-primary"
+          style={{ backgroundColor: bin.hexColor }}
+        />
+      </strong>
+      {bin.localName ? (
+        <>
+          {" "}
+          and <strong>labelled “{bin.localName}.”</strong>
+        </>
+      ) : (
+        "."
+      )}
     </Typography>
+  </Stack>
+);
+
+const CollectionSection = ({
+  name,
+  collection,
+}: {
+  name: string;
+  collection: CategoryDetails["collection"];
+}): JSX.Element => (
+  <Stack spacing={2} className="p-4" component="section">
+    <Stack direction="row" spacing={1.5}>
+      <MaterialSymbol
+        icon="local_shipping"
+        size="large"
+        className="text-light-primary dark:text-dark-primary"
+      />
+      <Typography variant="h2">Collection info</Typography>
+    </Stack>
   </Stack>
 );
 
@@ -139,6 +169,12 @@ const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
         preparation={categoryDetails.preparation}
       />
       <BinSection city={categoryDetails.regionCity} bin={categoryDetails.bin} />
+      {categoryDetails.collection.allowCollect && (
+        <CollectionSection
+          name={categoryDetails.name}
+          collection={categoryDetails.collection}
+        />
+      )}
     </Stack>
   );
 };

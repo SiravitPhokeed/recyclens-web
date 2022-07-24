@@ -22,6 +22,8 @@ export type CategoryDetails = {
     shouldRepair?: boolean;
   };
   bin: {
+    name: string;
+    localName: string;
     hexColor: string;
     image?: string;
   };

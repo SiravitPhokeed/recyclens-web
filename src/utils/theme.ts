@@ -2,7 +2,7 @@
 import { PaletteMode } from "@mui/material";
 import { ThemeOptions } from "@mui/system/createTheme";
 
-const sansFont = "-apple-system, BlinkMacSystemFont, Rubik";
+const sansFont = "-apple-system, BlinkMacSystemFont, Rubik, Sarabun";
 const displayFont = "Grandstander, -apple-system-headline, BlinkMacSystemFont";
 
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({

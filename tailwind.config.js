@@ -49,7 +49,7 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ["-apple-system", "BlinkMacSystemFont", "Rubik"],
+      sans: ["-apple-system", "BlinkMacSystemFont", "Rubik", "Sarabun"],
       display: ["Grandstander", "-apple-system-headline", "BlinkMacSystemFont"],
     },
     boxShadow: {
