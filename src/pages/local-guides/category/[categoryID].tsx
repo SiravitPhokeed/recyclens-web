@@ -1,5 +1,6 @@
 // External libraries
 import { GetServerSideProps } from "next";
+import ReactMarkdown from "react-markdown";
 
 // Material UI Components
 import { Paper, Stack, Typography } from "@mui/material";
@@ -7,11 +8,14 @@ import { Paper, Stack, Typography } from "@mui/material";
 // Backend
 import { getCategoryDetails } from "@utils/backend/categories";
 
+// Componetns
+import MaterialSymbol from "@components/MaterialSymbol";
+
 // Types
 import { RecycLensPage } from "@utils/types/common";
 import { CategoryDetails } from "@utils/types/categories";
-import MaterialSymbol from "@components/MaterialSymbol";
-import ReactMarkdown from "react-markdown";
+
+// Helpers
 import { formatSupabaseTime } from "@utils/helpers/datetime";
 
 // Components
@@ -141,57 +145,89 @@ const CollectionSection = ({
 }: {
   name: string;
   collection: CategoryDetails["collection"];
-}): JSX.Element =>
-  collection && (
-    <Stack spacing={2} className="p-4" component="section">
-      <Stack direction="row" spacing={1.5}>
-        <MaterialSymbol
-          icon="local_shipping"
-          size="large"
-          className="text-light-primary dark:text-dark-primary"
-        />
-        <Typography variant="h2">Collection info</Typography>
-      </Stack>
-
-      {(collection.binInfo || collection.categoryInfo) && (
-        <Stack>
-          {collection.binInfo && (
-            <>
-              <Typography>
-                “{name}” can be place for collection at a collection point,
-                together with other trash of the same bin type. Here’s how:
-              </Typography>
-              <ReactMarkdown className="markdown">
-                {collection.binInfo}
-              </ReactMarkdown>
-            </>
-          )}
-          {collection.categoryInfo && (
-            <ReactMarkdown className="markdown">
-              {collection.categoryInfo}
-            </ReactMarkdown>
-          )}
-        </Stack>
-      )}
-
-      {collection.times?.start && collection.times?.end && (
-        <Typography>
-          Set out bags at{" "}
-          <strong>
-            {formatSupabaseTime(collection.times.start)}-
-            {formatSupabaseTime(collection.times.end)}
-          </strong>
-          .{" "}
-          {collection.times?.lastTruck && (
-            <>
-              Last truck leaves at{" "}
-              {formatSupabaseTime(collection.times.lastTruck)}.
-            </>
-          )}
-        </Typography>
-      )}
+}): JSX.Element => (
+  <Stack spacing={2} className="p-4" component="section">
+    <Stack direction="row" spacing={1.5}>
+      <MaterialSymbol
+        icon="local_shipping"
+        size="large"
+        className="text-light-primary dark:text-dark-primary"
+      />
+      <Typography variant="h2">Collection info</Typography>
     </Stack>
-  );
+
+    {(collection.binInfo || collection.categoryInfo) && (
+      <Stack>
+        {collection.binInfo && (
+          <>
+            <Typography>
+              “{name}” can be place for collection at a collection point,
+              together with other trash of the same bin type. Here’s how:
+            </Typography>
+            <ReactMarkdown className="markdown">
+              {collection.binInfo}
+            </ReactMarkdown>
+          </>
+        )}
+        {collection.categoryInfo && (
+          <ReactMarkdown className="markdown">
+            {collection.categoryInfo}
+          </ReactMarkdown>
+        )}
+      </Stack>
+    )}
+
+    {collection.times?.start && collection.times?.end && (
+      <Typography>
+        Set out bags at{" "}
+        <strong>
+          {formatSupabaseTime(collection.times.start)}-
+          {formatSupabaseTime(collection.times.end)}
+        </strong>
+        .{" "}
+        {collection.times?.lastTruck && (
+          <>
+            Last truck leaves at{" "}
+            {formatSupabaseTime(collection.times.lastTruck)}.
+          </>
+        )}
+      </Typography>
+    )}
+  </Stack>
+);
+
+const DonationSection = ({
+  name,
+  donate,
+}: {
+  name: string;
+  donate: CategoryDetails["donate"];
+}): JSX.Element => (
+  <Stack spacing={2} className="p-4" component="section">
+    <Stack direction="row" spacing={1.5}>
+      <MaterialSymbol
+        icon="volunteer_activism"
+        size="large"
+        className="text-light-primary dark:text-dark-primary"
+      />
+      <Typography variant="h2">Donation guide</Typography>
+    </Stack>
+
+    {donate.info ? (
+      <Stack>
+        <Typography>
+          We have curated organizations accepting donations for “{name}” down
+          below. Check them out:
+        </Typography>
+        <ReactMarkdown className="markdown">{donate.info}</ReactMarkdown>
+      </Stack>
+    ) : (
+      <Typography>
+        It is highly recommended that you donate “{name}.”
+      </Typography>
+    )}
+  </Stack>
+);
 
 // Page
 const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
@@ -209,10 +245,18 @@ const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
         preparation={categoryDetails.preparation}
       />
       <BinSection city={categoryDetails.regionCity} bin={categoryDetails.bin} />
-      <CollectionSection
-        name={categoryDetails.name}
-        collection={categoryDetails.collection}
-      />
+      {categoryDetails.collection.allowCollect && (
+        <CollectionSection
+          name={categoryDetails.name}
+          collection={categoryDetails.collection}
+        />
+      )}
+      {categoryDetails.donate.canDonate && (
+        <DonationSection
+          name={categoryDetails.name}
+          donate={categoryDetails.donate}
+        />
+      )}
     </Stack>
   );
 };
