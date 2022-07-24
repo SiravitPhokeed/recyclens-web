@@ -11,11 +11,11 @@ module.exports = {
         light: {
           primary: {
             DEFAULT: "#486641",
-            contrastText: "#FFFFFF",
+            "contrast-text": "#FFFFFF",
           },
           secondary: {
             DEFAULT: "#B4CBCC",
-            contrastText: "#203435",
+            "contrast-text": "#203435",
           },
           background: {
             DEFAULT: "#FEFCF8",
@@ -30,11 +30,11 @@ module.exports = {
         dark: {
           primary: {
             DEFAULT: "#7ABB6C",
-            contrastText: "#1B3716",
+            "contrast-text": "#1B3716",
           },
           secondary: {
             DEFAULT: "#517E82",
-            contrastText: "#FFFFFF",
+            "contrast-text": "#FFFFFF",
           },
           background: {
             DEFAULT: "#1B1C1A",

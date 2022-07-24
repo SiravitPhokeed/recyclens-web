@@ -51,6 +51,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
 
   return (
     <Stack className="overflow-x-hidden">
+      {/* Introduction */}
       <Stack spacing={2} className="p-4">
         <Typography variant="body1">
           Search our database on all things trash in your area. Learn and follow
@@ -87,9 +88,10 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
           type="search"
         />
       </Stack>
-      <Stack spacing={2} className="p-4">
-        <Typography variant="h2">By Category</Typography>
 
+      {/* By category */}
+      <Stack spacing={2} className="p-4">
+        <Typography variant="h2">By category</Typography>
         <Stack>
           <AnimatePresence exitBeforeEnter>
             {categories.map((category, idx) => (
@@ -99,6 +101,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: 50, opacity: 0 }}
               >
+                {/* Category list item */}
                 <ButtonBase className="block w-full py-2">
                   <Link href={`/local-guides/category/${category.id}/th-bkk`}>
                     <Stack
@@ -107,12 +110,33 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
                       justifyContent="space-between"
                     >
                       <Stack direction="row" spacing={1} alignItems="center">
+                        {/* Label */}
                         <Typography variant="body1">{category.name}</Typography>
-                        <div
-                          className="border-text-primary h-4 w-4 rounded-full border-2
-                            dark:border-solid"
-                          style={{ backgroundColor: category.binColor }}
-                        />
+
+                        {/* Icons */}
+                        <Stack direction="row" spacing={0.5}>
+                          <div
+                            className="border-text-primary h-4 w-4 rounded-full border-2
+                              dark:border-solid"
+                            style={{ backgroundColor: category.binColor }}
+                          />
+                          {category.shouldRepair && (
+                            <MaterialSymbol
+                              icon="handyman"
+                              size="small"
+                              className="text-light-secondary-contrast-text
+                                dark:text-dark-secondary-contrast-text"
+                            />
+                          )}
+                          {category.canDonate && (
+                            <MaterialSymbol
+                              icon="volunteer_activism"
+                              size="small"
+                              className="text-light-secondary-contrast-text
+                                dark:text-dark-secondary-contrast-text"
+                            />
+                          )}
+                        </Stack>
                       </Stack>
                       <MaterialSymbol icon="arrow_forward" />
                     </Stack>

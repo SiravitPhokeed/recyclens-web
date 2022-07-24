@@ -5,14 +5,18 @@ const MaterialSymbol = ({
   style,
 }: {
   icon: string;
-  size?: "normal" | "large";
+  size?: "small" | "normal" | "large";
   className?: string;
   style?: React.CSSProperties;
 }): JSX.Element => (
   <i
     className={[
       "material-symbols",
-      size == "large" ? "material-symbols--header" : "",
+      size == "small"
+        ? "material-symbols--small"
+        : size == "large"
+        ? "material-symbols--large"
+        : "",
       className,
     ].join(" ")}
     style={style}
