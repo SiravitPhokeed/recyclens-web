@@ -12,6 +12,7 @@ import { RecycLensPage } from "@utils/types/common";
 import { CategoryDetails } from "@utils/types/categories";
 import MaterialSymbol from "@components/MaterialSymbol";
 import ReactMarkdown from "react-markdown";
+import { formatSupabaseTime } from "@utils/helpers/datetime";
 
 // Components
 const SummarySection = ({
@@ -140,18 +141,57 @@ const CollectionSection = ({
 }: {
   name: string;
   collection: CategoryDetails["collection"];
-}): JSX.Element => (
-  <Stack spacing={2} className="p-4" component="section">
-    <Stack direction="row" spacing={1.5}>
-      <MaterialSymbol
-        icon="local_shipping"
-        size="large"
-        className="text-light-primary dark:text-dark-primary"
-      />
-      <Typography variant="h2">Collection info</Typography>
+}): JSX.Element =>
+  collection && (
+    <Stack spacing={2} className="p-4" component="section">
+      <Stack direction="row" spacing={1.5}>
+        <MaterialSymbol
+          icon="local_shipping"
+          size="large"
+          className="text-light-primary dark:text-dark-primary"
+        />
+        <Typography variant="h2">Collection info</Typography>
+      </Stack>
+
+      {(collection.binInfo || collection.categoryInfo) && (
+        <Stack>
+          {collection.binInfo && (
+            <>
+              <Typography>
+                “{name}” can be place for collection at a collection point,
+                together with other trash of the same bin type. Here’s how:
+              </Typography>
+              <ReactMarkdown className="markdown">
+                {collection.binInfo}
+              </ReactMarkdown>
+            </>
+          )}
+          {collection.categoryInfo && (
+            <ReactMarkdown className="markdown">
+              {collection.categoryInfo}
+            </ReactMarkdown>
+          )}
+        </Stack>
+      )}
+
+      {collection.times?.start && collection.times?.end && (
+        <Typography>
+          Set out bags at{" "}
+          <strong>
+            {formatSupabaseTime(collection.times.start)}-
+            {formatSupabaseTime(collection.times.end)}
+          </strong>
+          .{" "}
+          {collection.times?.lastTruck && (
+            <>
+              Last truck leaves at{" "}
+              {formatSupabaseTime(collection.times.lastTruck)}.
+            </>
+          )}
+        </Typography>
+      )}
     </Stack>
-  </Stack>
-);
+  );
 
 // Page
 const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
@@ -169,12 +209,10 @@ const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
         preparation={categoryDetails.preparation}
       />
       <BinSection city={categoryDetails.regionCity} bin={categoryDetails.bin} />
-      {categoryDetails.collection.allowCollect && (
-        <CollectionSection
-          name={categoryDetails.name}
-          collection={categoryDetails.collection}
-        />
-      )}
+      <CollectionSection
+        name={categoryDetails.name}
+        collection={categoryDetails.collection}
+      />
     </Stack>
   );
 };

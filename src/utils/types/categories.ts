@@ -29,7 +29,11 @@ export type CategoryDetails = {
   };
   collection: {
     allowCollect?: boolean;
-    times?: Bin["collection"];
+    times?: {
+      start?: string;
+      end?: string;
+      lastTruck?: string;
+    };
     binInfo?: string;
     categoryInfo?: string;
   };
