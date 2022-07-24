@@ -1,4 +1,6 @@
 // External libraries
+import { AnimatePresence, motion } from "framer-motion";
+
 import React, { useEffect, useState } from "react";
 
 import { GetServerSideProps } from "next";
@@ -48,7 +50,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
   }, [location]);
 
   return (
-    <Stack>
+    <Stack className="overflow-x-hidden">
       <Stack spacing={2} className="p-4">
         <Typography variant="body1">
           Search our database on all things trash in your area. Learn and follow
@@ -88,28 +90,38 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
       <Stack spacing={2} className="p-4">
         <Typography variant="h2">By Category</Typography>
 
-        <Stack divider={<Divider />}>
-          {categories.map((category) => (
-            <ButtonBase key={category.id} className="block py-2">
-              <Link href={`/local-guides/category/${category.id}/th-bkk`}>
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  justifyContent="space-between"
-                >
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Typography variant="body1">{category.name}</Typography>
-                    <div
-                      className="border-text-primary h-4 w-4 rounded-full border-2
-                        dark:border-solid"
-                      style={{ backgroundColor: category.binColor }}
-                    />
-                  </Stack>
-                  <MaterialSymbol icon="arrow_forward" />
-                </Stack>
-              </Link>
-            </ButtonBase>
-          ))}
+        <Stack>
+          <AnimatePresence exitBeforeEnter>
+            {categories.map((category, idx) => (
+              <motion.div
+                key={[location, category.id].join("-")}
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 50, opacity: 0 }}
+              >
+                <ButtonBase className="block w-full py-2">
+                  <Link href={`/local-guides/category/${category.id}/th-bkk`}>
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      justifyContent="space-between"
+                    >
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography variant="body1">{category.name}</Typography>
+                        <div
+                          className="border-text-primary h-4 w-4 rounded-full border-2
+                            dark:border-solid"
+                          style={{ backgroundColor: category.binColor }}
+                        />
+                      </Stack>
+                      <MaterialSymbol icon="arrow_forward" />
+                    </Stack>
+                  </Link>
+                </ButtonBase>
+                {idx < categories.length - 1 && <Divider />}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </Stack>
       </Stack>
     </Stack>
