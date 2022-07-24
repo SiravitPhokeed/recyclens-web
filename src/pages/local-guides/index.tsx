@@ -22,14 +22,15 @@ import ButtonBase from "@mui/material/ButtonBase";
 import MaterialSymbol from "@components/MaterialSymbol";
 
 // Backend
+import { getCategoriesForRegion } from "@utils/backend/categories";
 import { getRegions } from "@utils/backend/regions";
 
 // Types
 import { RecycLensPage } from "@utils/types/common";
-import { getCategoriesForRegion } from "@utils/backend/categories";
+import { Region } from "@utils/types/regions";
 
 // Page
-const LocalGuides: RecycLensPage<{ regions: any[] }> = ({ regions }) => {
+const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
   const [location, setLocation] = useState<number>(
     regions.length > 0 ? regions[0].id : 0
   );
