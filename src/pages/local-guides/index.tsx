@@ -103,7 +103,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
               >
                 {/* Category list item */}
                 <ButtonBase className="block w-full py-2">
-                  <Link href={`/local-guides/category/${category.id}/th-bkk`}>
+                  <Link href={`/local-guides/category/${category.id}`}>
                     <Stack
                       direction="row"
                       spacing={2}
