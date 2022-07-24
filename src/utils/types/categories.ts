@@ -1,5 +1,6 @@
 // Related types
-import { Region } from "./regions";
+import { DBBin } from "./bins";
+import { DBRegion } from "./regions";
 
 // Frontend types
 export type CategoryListItem = {
@@ -27,6 +28,6 @@ export type DBCategory = {
 };
 
 export type DBJoinedCategory = Omit<DBCategory, "region" | "bin"> & {
-  region: Region;
-  bin: any; // TODO
+  region: DBRegion;
+  bin: DBBin;
 };
