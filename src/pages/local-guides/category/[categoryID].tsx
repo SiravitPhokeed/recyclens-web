@@ -1,6 +1,5 @@
 // External libraries
 import { GetServerSideProps } from "next";
-import ReactMarkdown from "react-markdown";
 
 // Material UI Components
 import { Paper, Stack, Typography } from "@mui/material";
@@ -9,6 +8,7 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { getCategoryDetails } from "@utils/backend/categories";
 
 // Componetns
+import Markdown from "@components/Markdown";
 import MaterialSymbol from "@components/MaterialSymbol";
 
 // Types
@@ -85,15 +85,13 @@ const PreparationSection = ({
 
     <Stack>
       <Typography>“{name}” must be prepared. Here’s how:</Typography>
-      <ReactMarkdown className="markdown">{preparation.info}</ReactMarkdown>
+      <Markdown>{preparation.info}</Markdown>
     </Stack>
 
     {preparation.restrictions && (
       <Stack>
         <Typography>Before you proceed, do note the following:</Typography>
-        <ReactMarkdown className="markdown">
-          {preparation.restrictions}
-        </ReactMarkdown>
+        <Markdown>{preparation.restrictions}</Markdown>
       </Stack>
     )}
   </Stack>
@@ -164,15 +162,11 @@ const CollectionSection = ({
               “{name}” can be place for collection at a collection point,
               together with other trash of the same bin type. Here’s how:
             </Typography>
-            <ReactMarkdown className="markdown">
-              {collection.binInfo}
-            </ReactMarkdown>
+            <Markdown>{collection.binInfo}</Markdown>
           </>
         )}
         {collection.categoryInfo && (
-          <ReactMarkdown className="markdown">
-            {collection.categoryInfo}
-          </ReactMarkdown>
+          <Markdown>{collection.categoryInfo}</Markdown>
         )}
       </Stack>
     )}
@@ -219,7 +213,7 @@ const DonationSection = ({
           We have curated organizations accepting donations for “{name}” down
           below. Check them out:
         </Typography>
-        <ReactMarkdown className="markdown">{donate.info}</ReactMarkdown>
+        <Markdown>{donate.info}</Markdown>
       </Stack>
     ) : (
       <Typography>
@@ -237,7 +231,6 @@ const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
     <Stack>
       <Stack className="p-4">
         <Typography variant="h1">{categoryDetails.name}</Typography>
-        <Typography variant="subtitle1">Recognized type</Typography>
       </Stack>
       {/* <SummarySection categoryDetails={categoryDetails} /> */}
       <PreparationSection
