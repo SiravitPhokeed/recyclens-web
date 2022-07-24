@@ -15,6 +15,7 @@ export type CategoryListItem = {
 export type CategoryDetails = {
   id: number;
   name: string;
+  regionCity: string;
   preparation: {
     info: string;
     restrictions?: string;

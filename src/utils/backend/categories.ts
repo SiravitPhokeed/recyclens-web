@@ -38,7 +38,7 @@ export async function getCategoryDetails(
 ): Promise<RecycLensBackendReturn<CategoryDetails>> {
   const { data, error } = await supabase
     .from<DBJoinedCategory>("categories")
-    .select("*, bin:bins(*)")
+    .select("*, region:regions(city), bin:bins(*)")
     .match({ id: categoryID })
     .limit(1)
     .single();
@@ -48,6 +48,7 @@ export async function getCategoryDetails(
     data: {
       id: data.id,
       name: data.name,
+      regionCity: data.region.city,
       preparation: {
         info: data.preparation,
         restrictions: data.restrictions,

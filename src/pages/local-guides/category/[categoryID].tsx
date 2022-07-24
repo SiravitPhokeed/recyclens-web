@@ -94,6 +94,35 @@ const PreparationSection = ({
   </Stack>
 );
 
+const BinSection = ({
+  city,
+  bin,
+}: {
+  city: string;
+  bin: CategoryDetails["bin"];
+}): JSX.Element => (
+  <Stack spacing={2} className="p-4" component="section">
+    <Stack direction="row" spacing={1.5}>
+      <MaterialSymbol
+        icon="delete"
+        size="large"
+        className="text-light-primary dark:text-dark-primary"
+      />
+      <Typography variant="h2">Garbage bin</Typography>
+    </Stack>
+
+    <Typography>
+      For smaller numbers, use the <strong>PLACEHOLDER</strong>. In {city}, the
+      bin is{" "}
+      <span
+        className="inline-block h-4 w-4 rounded-full"
+        style={{ backgroundColor: bin.hexColor }}
+      />{" "}
+      <strong>PLACEHOLDER</strong> and <strong>labelled “PLACEHOLDER.”</strong>
+    </Typography>
+  </Stack>
+);
+
 // Page
 const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
   categoryDetails,
@@ -109,6 +138,7 @@ const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
         name={categoryDetails.name}
         preparation={categoryDetails.preparation}
       />
+      <BinSection city={categoryDetails.regionCity} bin={categoryDetails.bin} />
     </Stack>
   );
 };

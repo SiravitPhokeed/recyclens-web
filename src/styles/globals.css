@@ -49,9 +49,9 @@
   }
 
   .markdown {
-    @apply prose max-w-none font-sans prose-p:my-2
-      text-light-text-primary marker:text-base prose-headings:font-display prose-li:marker:font-display
+    @apply prose max-w-none font-sans leading-normal text-light-text-primary
+      marker:text-base prose-headings:font-display prose-p:my-2 prose-li:marker:font-display
       prose-li:marker:text-light-primary dark:prose-invert
-      dark:text-dark-text-primary prose-li:dark:marker:text-dark-primary;
+      dark:text-dark-text-primary dark:prose-li:marker:text-dark-primary;
   }
 }
