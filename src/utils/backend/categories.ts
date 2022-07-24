@@ -2,7 +2,11 @@
 import { supabase } from "@utils/supabase-client";
 
 // Types
-import { CategoryListItem, DBJoinedCategory } from "@utils/types/categories";
+import {
+  CategoryDetails,
+  CategoryListItem,
+  DBJoinedCategory,
+} from "@utils/types/categories";
 import { RecycLensBackendReturn } from "@utils/types/common";
 
 export async function getCategoriesForRegion(
@@ -10,8 +14,11 @@ export async function getCategoriesForRegion(
 ): Promise<RecycLensBackendReturn<CategoryListItem[]>> {
   const { data, error } = await supabase
     .from<DBJoinedCategory>("categories")
-    .select("name, region:regions(id), bin:bins(*), should_repair, can_donate")
-    .match({ region: regionID });
+    .select(
+      "id, name, region:regions(id), bin:bins(*), should_repair, can_donate"
+    )
+    .match({ region: regionID })
+    .order("name");
 
   if (error) return { data: null, error };
   return {
@@ -23,6 +30,52 @@ export async function getCategoriesForRegion(
       shouldRepair: category.should_repair,
       canDonate: category.can_donate,
     })),
+    error: null,
+  };
+}
+
+export async function getCategoryDetails(
+  categoryID: number
+): Promise<RecycLensBackendReturn<CategoryDetails>> {
+  const { data, error } = await supabase
+    .from<DBJoinedCategory>("categories")
+    .select("*, region:regions(city), bin:bins(*)")
+    .match({ id: categoryID })
+    .limit(1)
+    .single();
+
+  if (error) return { data: null, error };
+  return {
+    data: {
+      id: data.id,
+      name: data.name,
+      regionCity: data.region.city,
+      preparation: {
+        info: data.preparation,
+        restrictions: data.restrictions,
+        shouldRepair: data.should_repair,
+      },
+      bin: {
+        name: data.bin.name,
+        localName: data.bin.name_local,
+        hexColor: data.bin.hex_color,
+        image: data.bin.image,
+      },
+      collection: {
+        allowCollect: data.allow_collect,
+        times: {
+          start: data.bin.collect_start,
+          end: data.bin.collect_end,
+          lastTruck: data.bin.last_truck,
+        },
+        binInfo: data.bin.collect_info,
+        categoryInfo: data.collect_info,
+      },
+      donate: {
+        canDonate: data.can_donate,
+        info: data.donate_info,
+      },
+    },
     error: null,
   };
 }

@@ -58,7 +58,7 @@ const Layout = ({
         {/* App bar */}
         <AppBar position="fixed">
           <Toolbar>
-            {appBar?.backGoesTo ? (
+            {appBar?.backGoesTo && (
               <IconButton
                 LinkComponent={Link}
                 href={appBar.backGoesTo}
@@ -68,15 +68,6 @@ const Layout = ({
                 sx={{ mr: 1 }}
               >
                 <MaterialSymbol icon="arrow_back" />
-              </IconButton>
-            ) : (
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                sx={{ mr: 1 }}
-              >
-                <MaterialSymbol icon="menu" />
               </IconButton>
             )}
             <Typography variant="h3" component="div" sx={{ flexGrow: 1 }}>

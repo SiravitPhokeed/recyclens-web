@@ -1,5 +1,6 @@
 export type Bin = {
   id: number;
+  name: string;
   hexColor: string;
   image?: string;
   collection?: Partial<{
@@ -12,6 +13,8 @@ export type Bin = {
 
 export type DBBin = {
   id: number;
+  name: string;
+  name_local: string;
   hex_color: string;
   image?: string;
   collect_info?: string;

@@ -2,7 +2,7 @@
 import { PaletteMode } from "@mui/material";
 import { ThemeOptions } from "@mui/system/createTheme";
 
-const sansFont = "-apple-system, BlinkMacSystemFont, Rubik";
+const sansFont = "-apple-system, BlinkMacSystemFont, Rubik, Sarabun";
 const displayFont = "Grandstander, -apple-system-headline, BlinkMacSystemFont";
 
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
@@ -10,22 +10,27 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     fontFamily: sansFont,
     h1: {
       fontSize: "3.5625rem",
+      fontWeight: 400,
       fontFamily: displayFont,
     },
     h2: {
       fontSize: "2rem",
+      fontWeight: 400,
       fontFamily: displayFont,
     },
     h3: {
       fontSize: "1.75rem",
+      fontWeight: 400,
       fontFamily: displayFont,
     },
     h4: {
       fontSize: "1.5rem",
+      fontWeight: 400,
       fontFamily: displayFont,
     },
     h5: {
       fontSize: "1.375rem",
+      fontWeight: 400,
       fontFamily: displayFont,
     },
     h6: {
@@ -36,6 +41,7 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     subtitle1: {
       fontSize: "1.5rem",
       fontFamily: displayFont,
+      color: mode == "light" ? "#486641" : "#7ABB6C",
     },
     button: {
       fontSize: "1rem",
@@ -45,7 +51,7 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   },
   palette: {
     mode,
-    ...(mode === "light"
+    ...(mode == "light"
       ? {
           primary: {
             main: "#486641",
@@ -104,4 +110,3 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
 });
 
 export default getDesignTokens;
-

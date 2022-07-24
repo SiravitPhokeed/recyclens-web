@@ -1,6 +1,6 @@
 // Related types
-import { DBBin } from "./bins";
-import { DBRegion } from "./regions";
+import { Bin, DBBin } from "@utils/types/bins";
+import { DBRegion } from "@utils/types/regions";
 
 // Frontend types
 export type CategoryListItem = {
@@ -10,6 +10,37 @@ export type CategoryListItem = {
   binColor: string;
   shouldRepair?: boolean;
   canDonate?: boolean;
+};
+
+export type CategoryDetails = {
+  id: number;
+  name: string;
+  regionCity: string;
+  preparation: {
+    info: string;
+    restrictions?: string;
+    shouldRepair?: boolean;
+  };
+  bin: {
+    name: string;
+    localName: string;
+    hexColor: string;
+    image?: string;
+  };
+  collection: {
+    allowCollect?: boolean;
+    times?: {
+      start?: string;
+      end?: string;
+      lastTruck?: string;
+    };
+    binInfo?: string;
+    categoryInfo?: string;
+  };
+  donate: {
+    canDonate?: boolean;
+    info?: string;
+  };
 };
 
 // Backend types
