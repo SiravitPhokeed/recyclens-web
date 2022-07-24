@@ -94,7 +94,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
           <AnimatePresence exitBeforeEnter>
             {categories.map((category, idx) => (
               <motion.div
-                key={[location, category.id].join("-")}
+                key={[category.regionID, category.id].join("-")}
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: 50, opacity: 0 }}

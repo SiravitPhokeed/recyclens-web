@@ -10,7 +10,7 @@ export async function getCategoriesForRegion(
 ): Promise<RecycLensBackendReturn<CategoryListItem[]>> {
   const { data, error } = await supabase
     .from<DBJoinedCategory>("categories")
-    .select("name, bin:bins(*), should_repair, can_donate")
+    .select("name, region:regions(id), bin:bins(*), should_repair, can_donate")
     .match({ region: regionID });
 
   if (error) return { data: null, error };
@@ -18,6 +18,7 @@ export async function getCategoriesForRegion(
     data: data.map((category) => ({
       id: category.id,
       name: category.name,
+      regionID: category.region.id,
       binColor: category.bin.hex_color,
       shouldRepair: category.should_repair,
       canDonate: category.can_donate,

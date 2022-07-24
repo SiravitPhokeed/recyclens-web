@@ -6,6 +6,7 @@ import { DBRegion } from "./regions";
 export type CategoryListItem = {
   id: number;
   name: string;
+  regionID: number;
   binColor: string;
   shouldRepair?: boolean;
   canDonate?: boolean;
