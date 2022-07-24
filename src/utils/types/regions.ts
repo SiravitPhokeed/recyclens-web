@@ -7,4 +7,4 @@ export type Region = {
 };
 
 // Backend types
-export type DBRegion = Partial<Region & { created_at: string }>;
+export type DBRegion = Region & { created_at: string };

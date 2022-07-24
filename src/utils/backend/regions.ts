@@ -3,11 +3,11 @@ import { supabase } from "@utils/supabase-client";
 
 // Types
 import { RecycLensBackendReturn } from "@utils/types/common";
-import { Region } from "@utils/types/regions";
+import { DBRegion, Region } from "@utils/types/regions";
 
 export async function getRegions(): Promise<RecycLensBackendReturn<Region[]>> {
   const { data, error } = await supabase
-    .from("regions")
+    .from<DBRegion>("regions")
     .select("id, code, city, country")
     .order("country");
 
@@ -19,7 +19,7 @@ export async function getRegionID(
   code: string
 ): Promise<RecycLensBackendReturn<number>> {
   const { data, error } = await supabase
-    .from("regions")
+    .from<DBRegion>("regions")
     .select("id")
     .match({ code })
     .limit(1)

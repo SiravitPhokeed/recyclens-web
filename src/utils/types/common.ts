@@ -1,6 +1,11 @@
+// External libraries
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextPage } from "next";
 
+/**
+ * NextPage modified to carry additional information about the
+ * page’s App Bar.
+ */
 export type RecycLensPage<T = {}> = NextPage<T> & {
   appBar?: {
     title: string;
@@ -10,4 +15,4 @@ export type RecycLensPage<T = {}> = NextPage<T> & {
 
 export type RecycLensBackendReturn<T> =
   | { data: T; error: null }
-  | { data: null; error: Partial<PostgrestError> };
+  | { data: null | 0 | []; error: Partial<PostgrestError> };

@@ -26,6 +26,7 @@ import { getCategoriesForRegion } from "@utils/backend/categories";
 import { getRegions } from "@utils/backend/regions";
 
 // Types
+import { CategoryListItem } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
 import { Region } from "@utils/types/regions";
 
@@ -35,7 +36,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
     regions.length > 0 ? regions[0].id : 0
   );
 
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<CategoryListItem[]>([]);
 
   useEffect(() => {
     async function fasCategories() {
@@ -101,7 +102,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
                     <div
                       className="border-text-primary h-4 w-4 rounded-full border-2
                         dark:border-solid"
-                      style={{ backgroundColor: `#${category.color}` }}
+                      style={{ backgroundColor: category.binColor }}
                     />
                   </Stack>
                   <MaterialSymbol icon="arrow_forward" />
