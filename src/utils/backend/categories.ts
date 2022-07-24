@@ -17,7 +17,8 @@ export async function getCategoriesForRegion(
     .select(
       "id, name, region:regions(id), bin:bins(*), should_repair, can_donate"
     )
-    .match({ region: regionID });
+    .match({ region: regionID })
+    .order("name");
 
   if (error) return { data: null, error };
   return {
