@@ -1,5 +1,7 @@
 // External libraries
 import React, { useState } from "react";
+
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 
 // MUI Components
@@ -18,6 +20,9 @@ import ButtonBase from "@mui/material/ButtonBase";
 
 // Components
 import MaterialSymbol from "@components/MaterialSymbol";
+
+// Backend
+import { getRegions } from "@utils/backend/regions";
 
 // Types
 import { RecycLensPage } from "@utils/types/common";
@@ -45,8 +50,10 @@ const categories = [
 ];
 
 // Page
-const LocalGuides: RecycLensPage = () => {
-  const [location, setLocation] = useState(10);
+const LocalGuides: RecycLensPage<{ regions: any[] }> = ({ regions }) => {
+  const [location, setLocation] = useState(
+    regions.length > 0 ? regions[0].id : 0
+  );
 
   return (
     <Stack>
@@ -65,8 +72,11 @@ const LocalGuides: RecycLensPage = () => {
             label="Location"
             onChange={(e) => setLocation(e.target.value as number)}
           >
-            <MenuItem value={10}>Bangkok, Thailand</MenuItem>
-            <MenuItem value={20}>Singapore, Singapore</MenuItem>
+            {regions.map((region) => (
+              <MenuItem key={region.id} value={region.id}>
+                {[region.city, region.country].join(", ")}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <TextField
@@ -112,6 +122,16 @@ const LocalGuides: RecycLensPage = () => {
       </Stack>
     </Stack>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { data: regions } = await getRegions();
+
+  return {
+    props: {
+      regions,
+    },
+  };
 };
 
 LocalGuides.appBar = { title: "Local guides", backGoesTo: "/" };
