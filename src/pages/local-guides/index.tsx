@@ -1,5 +1,5 @@
 // External libraries
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { GetServerSideProps } from "next";
 import Link from "next/link";
@@ -26,34 +26,24 @@ import { getRegions } from "@utils/backend/regions";
 
 // Types
 import { RecycLensPage } from "@utils/types/common";
-
-// Dummybase
-const categories = [
-  {
-    id: 1,
-    name: "Aluminium Foil",
-    color: "071776",
-    reuse: false,
-  },
-  {
-    id: 2,
-    name: "Biological",
-    color: "13841A",
-    reuse: false,
-  },
-  {
-    id: 3,
-    name: "Book",
-    color: "EAC61A",
-    reuse: true,
-  },
-];
+import { getCategoriesForRegion } from "@utils/backend/categories";
 
 // Page
 const LocalGuides: RecycLensPage<{ regions: any[] }> = ({ regions }) => {
-  const [location, setLocation] = useState(
+  const [location, setLocation] = useState<number>(
     regions.length > 0 ? regions[0].id : 0
   );
+
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fasCategories() {
+      const { data, error } = await getCategoriesForRegion(location);
+      if (error) return;
+      setCategories(data);
+    }
+    fasCategories();
+  }, [location]);
 
   return (
     <Stack>
