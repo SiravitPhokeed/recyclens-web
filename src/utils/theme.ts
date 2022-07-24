@@ -9,7 +9,7 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   typography: {
     fontFamily: sansFont,
     h1: {
-      fontSize: "3.5rem",
+      fontSize: "3.5625rem",
       fontFamily: displayFont,
     },
     h2: {
@@ -25,11 +25,12 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
       fontFamily: displayFont,
     },
     h5: {
-      fontSize: "1.25rem",
+      fontSize: "1.375rem",
       fontFamily: displayFont,
     },
     h6: {
-      fontSize: "1.125rem",
+      fontSize: "1em",
+      fontWeight: 500,
       fontFamily: displayFont,
     },
     subtitle1: {

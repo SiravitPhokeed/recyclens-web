@@ -32,8 +32,9 @@ import "../styles/globals.css";
 import { RecycLensPage } from "@utils/types/common";
 
 // Utils
-import createEmotionCache from "@utils/createEmotionCache";
-import getDesignTokens from "@utils/getDesignTokens";
+import createEmotionCache from "@utils/emotion";
+import getDesignTokens from "@utils/theme";
+import { MotionConfig } from "framer-motion";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -46,9 +47,7 @@ function App({
   emotionCache: EmotionCache;
 }) {
   emotionCache = clientSideEmotionCache;
-
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-
   const theme = useMemo(
     () =>
       createTheme(
@@ -56,15 +55,18 @@ function App({
       ),
     [prefersDarkMode]
   );
+
   return (
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Layout appBar={Component.appBar}>
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider>
-    </CacheProvider>
+    <MotionConfig reducedMotion="user">
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Layout appBar={Component.appBar}>
+            <Component {...pageProps} />
+          </Layout>
+        </ThemeProvider>
+      </CacheProvider>
+    </MotionConfig>
   );
 }
 
