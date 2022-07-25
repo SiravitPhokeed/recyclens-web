@@ -16,6 +16,10 @@ class RecycLensDocument extends Document {
             content="#7ABB6C"
             media="(prefers-color-scheme: dark)"
           />
+          {/* eslint-disable @next/next/no-sync-scripts */}
+          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core" />
+          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-cpu" />
+          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js" />
         </Head>
         <body>
           <Main />
