@@ -1,4 +1,5 @@
 // External libraries
+import { AnimatePresence, motion } from "framer-motion";
 import {
   MutableRefObject,
   useEffect,
@@ -8,6 +9,9 @@ import {
 } from "react";
 import Webcam from "react-webcam";
 import Image from "next/image";
+import { useRouter } from "next/router";
+
+import * as tf from "@tensorflow/tfjs-core";
 
 // Material UI
 import {
@@ -21,9 +25,10 @@ import {
 
 // Components
 import MaterialSymbol from "@components/MaterialSymbol";
-import { AnimatePresence, motion } from "framer-motion";
 
 const WebcamWControls = () => {
+  const router = useRouter();
+
   // Device viewport witdth
   // (for ensuring the viewfinder perfectly fits the screen)
   const [clientWidth, setClientWidth] = useState<number>(360);
@@ -62,6 +67,63 @@ const WebcamWControls = () => {
   const [capturedImage, setCapturedImage] = useState<string | null>();
 
   useEffect(() => {
+    async function classify() {
+      // @ts-ignore
+      const tfliteModel = await tflite.loadTFLiteModel(
+        "https://cxsvusqpigjppogkintz.supabase.co/storage/v1/object/public/models/recyclens_model_v2.tflite?t=2022-07-24T23%3A58%3A19.830Z"
+      );
+
+      if (!webcamRef.current) return;
+
+      const img = tf.browser.fromPixels(
+        webcamRef.current.video as HTMLVideoElement
+      );
+      const input = tf.cast(
+        tf.sub(tf.div(tf.expandDims(img), 127.5), 1),
+        "bool"
+      );
+
+      // Run inference and get output tensors
+      let outputTensor = tfliteModel.predict(input).dataSync();
+
+      let maxIndex = -1;
+      let maxConfidence = 0;
+      outputTensor.forEach((item: number, index: number) => {
+        if (item > maxConfidence) {
+          maxIndex = index;
+          maxConfidence = item;
+        }
+      });
+
+      const redirectMap: { [key: number]: number } = {
+        0: 8,
+        1: 9,
+        2: 5,
+        3: 16,
+        4: 14,
+        5: 11,
+        6: 15,
+        7: 12,
+        8: 7,
+        9: 6,
+        10: 13,
+        11: 4,
+        12: 17,
+        13: 10,
+      };
+
+      setTimeout(() => {
+        setCapturedImage(null);
+        router.push(
+          `/local-guides/category/${redirectMap[maxIndex] || 0}`
+        );
+      }, 3000);
+    }
+    if (capturedImage) classify();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [capturedImage]);
+
+  useEffect(() => {
     if (capturedImage) {
       setTimeout(() => setCapturedImage(null), 3000);
     }
@@ -85,14 +147,15 @@ const WebcamWControls = () => {
           audio={false}
           ref={webcamRef as any}
           height={clientWidth}
-          screenshotFormat="image/jpeg"
           width={clientWidth}
+          screenshotFormat="image/jpeg"
           videoConstraints={{
             deviceId: clientCameras[currentCamIdx]?.deviceId,
-            height: clientWidth,
-            width: clientWidth,
+            height: 300,
+            width: 300,
           }}
           mirrored={mirrored}
+          className="w-full"
         />
 
         {/* Contols */}
@@ -115,11 +178,11 @@ const WebcamWControls = () => {
           {/* Take photo */}
           <Button
             variant="contained"
-            onClick={() =>
+            onClick={() => {
               setCapturedImage(() => {
                 if (webcamRef.current) return webcamRef.current.getScreenshot();
-              })
-            }
+              });
+            }}
           >
             <MaterialSymbol icon="camera" />
           </Button>

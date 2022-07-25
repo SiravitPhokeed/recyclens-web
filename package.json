@@ -16,12 +16,14 @@
     "@fontsource/sarabun": "^4.5.8",
     "@mui/material": "^5.9.1",
     "@supabase/supabase-js": "^1.35.4",
+    "@tensorflow/tfjs-backend-cpu": "^3.11.0",
+    "@tensorflow/tfjs-core": "^3.11.0",
+    "@tensorflow/tfjs-tflite": "^0.0.1-alpha.8",
     "framer-motion": "^6.5.1",
     "next": "12.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.3",
-    "react-tensorflow": "^2.2.0",
     "react-webcam": "^7.0.1"
   },
   "devDependencies": {
