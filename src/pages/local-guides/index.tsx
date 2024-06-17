@@ -35,7 +35,7 @@ import { Region } from "@utils/types/regions";
 // Page
 const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
   const [location, setLocation] = useState<number>(
-    regions.length > 0 ? regions[0].id : 0
+    regions.length > 0 ? regions[0].id : 0,
   );
 
   const [categories, setCategories] = useState<CategoryListItem[]>([]);
@@ -93,7 +93,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
       <Stack spacing={2} className="p-4">
         <Typography variant="h2">By category</Typography>
         <Stack>
-          <AnimatePresence exitBeforeEnter>
+          <AnimatePresence mode="wait">
             {categories.map((category, idx) => (
               <motion.div
                 key={[category.regionID, category.id].join("-")}

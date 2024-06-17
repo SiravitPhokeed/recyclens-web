@@ -50,7 +50,7 @@ const Layout = ({
 
   return (
     <AnimatePresence
-      exitBeforeEnter
+      mode="wait"
       initial={false}
       onExitComplete={() => window.scrollTo(0, 0)}
     >
