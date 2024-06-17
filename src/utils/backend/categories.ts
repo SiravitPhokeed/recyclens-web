@@ -2,21 +2,15 @@
 import { supabase } from "@utils/supabase-client";
 
 // Types
-import {
-  CategoryDetails,
-  CategoryListItem,
-  DBJoinedCategory,
-} from "@utils/types/categories";
+import { CategoryDetails, CategoryListItem } from "@utils/types/categories";
 import { RecycLensBackendReturn } from "@utils/types/common";
 
 export async function getCategoriesForRegion(
-  regionID: number
+  regionID: number,
 ): Promise<RecycLensBackendReturn<CategoryListItem[]>> {
   const { data, error } = await supabase
-    .from<DBJoinedCategory>("categories")
-    .select(
-      "id, name, region:regions(id), bin:bins(*), should_repair, can_donate"
-    )
+    .from("categories")
+    .select("id, name, bin:bins!inner(*), should_repair, can_donate")
     .match({ region: regionID })
     .order("name");
 
@@ -25,7 +19,7 @@ export async function getCategoriesForRegion(
     data: data.map((category) => ({
       id: category.id,
       name: category.name,
-      regionID: category.region.id,
+      regionID,
       binColor: category.bin.hex_color,
       shouldRepair: category.should_repair,
       canDonate: category.can_donate,
@@ -35,11 +29,11 @@ export async function getCategoriesForRegion(
 }
 
 export async function getCategoryDetails(
-  categoryID: number
+  categoryID: number,
 ): Promise<RecycLensBackendReturn<CategoryDetails>> {
   const { data, error } = await supabase
-    .from<DBJoinedCategory>("categories")
-    .select("*, region:regions(city), bin:bins(*)")
+    .from("categories")
+    .select("*, region:regions(city), bin:bins!inner(*)")
     .match({ id: categoryID })
     .limit(1)
     .single();
