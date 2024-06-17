@@ -14,7 +14,7 @@
     "@fontsource/grandstander": "^4.5.10",
     "@fontsource/rubik": "^4.5.14",
     "@fontsource/sarabun": "^4.5.9",
-    "@mui/material": "^5.9.1",
+    "@mui/material": "^5.15.20",
     "@supabase/supabase-js": "^2.43.5",
     "@tensorflow/tfjs-core": "^4.10.0",
     "framer-motion": "^11.2.10",

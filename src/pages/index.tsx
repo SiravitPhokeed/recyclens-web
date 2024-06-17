@@ -1,11 +1,9 @@
 // MUI Components
 import { Button, Paper, Stack, Typography } from "@mui/material";
 
-// Components
-import Link from "@components/Link";
-
 // Types
 import { RecycLensPage } from "@utils/types/common";
+import Link from "next/link";
 
 const Welcome: RecycLensPage = () => {
   return (

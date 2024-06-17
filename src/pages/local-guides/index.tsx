@@ -103,7 +103,10 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
               >
                 {/* Category list item */}
                 <ButtonBase className="block w-full py-2">
-                  <Link href={`/local-guides/category/${category.id}`}>
+                  <Link
+                    className="no-underline text-inherit"
+                    href={`/local-guides/category/${category.id}`}
+                  >
                     <Stack
                       direction="row"
                       spacing={2}
@@ -116,8 +119,8 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
                         {/* Icons */}
                         <Stack direction="row" spacing={0.5}>
                           <div
-                            className="border-text-primary h-4 w-4 rounded-full border-2
-                              dark:border-solid"
+                            className="border-text-primary h-4 w-4 rounded-full
+                              border-2 dark:border-solid"
                             style={{ backgroundColor: category.binColor }}
                           />
                           {category.shouldRepair && (

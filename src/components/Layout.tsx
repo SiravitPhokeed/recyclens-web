@@ -1,4 +1,5 @@
 // External libraries
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 
@@ -15,7 +16,6 @@ import {
 
 // Components
 import MaterialSymbol from "@components/MaterialSymbol";
-import Link from "@components/Link";
 
 // Types
 import { RecycLensPage } from "@utils/types/common";
