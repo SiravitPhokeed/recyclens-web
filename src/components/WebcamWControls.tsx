@@ -1,17 +1,10 @@
 // External libraries
+import * as tf from "@tensorflow/tfjs-core";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  MutableRefObject,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
-import Webcam from "react-webcam";
 import Image from "next/image";
 import { useRouter } from "next/router";
-
-import * as tf from "@tensorflow/tfjs-core";
+import { RefObject, useEffect, useReducer, useRef, useState } from "react";
+import Webcam from "react-webcam";
 
 // Material UI
 import {
@@ -26,14 +19,17 @@ import {
 // Components
 import MaterialSymbol from "@components/MaterialSymbol";
 
+const DEFAULT_WEBCAM_SIZE = 300;
+const MAX_WEBCAM_SIZE = 576;
+
 const WebcamWControls = () => {
   const router = useRouter();
 
   // Device viewport witdth
   // (for ensuring the viewfinder perfectly fits the screen)
-  const [clientWidth, setClientWidth] = useState<number>(360);
+  const [clientWidth, setClientWidth] = useState(DEFAULT_WEBCAM_SIZE);
   useEffect(
-    () => setClientWidth(window.innerWidth > 576 ? 576 : window.innerWidth),
+    () => setClientWidth(Math.min(window.innerWidth, MAX_WEBCAM_SIZE)),
     []
   );
 
@@ -63,28 +59,24 @@ const WebcamWControls = () => {
   );
 
   // Captured image
-  const webcamRef: MutableRefObject<Webcam | undefined> = useRef();
+  const webcamRef: RefObject<Webcam> = useRef(null);
   const [capturedImage, setCapturedImage] = useState<string | null>();
 
   useEffect(() => {
-    async function classify() {
-      // @ts-ignore
-      const tfliteModel = await tflite.loadTFLiteModel(
-        "https://cxsvusqpigjppogkintz.supabase.co/storage/v1/object/public/models/recyclens_model_v2.tflite?t=2022-07-24T23%3A58%3A19.830Z"
+    if (!capturedImage) return;
+    setTimeout(() => setCapturedImage(null), 3000);
+
+    (async () => {
+      const tfliteModel = await (window as any).tflite.loadTFLiteModel(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/models/recyclens_model_v2.tflite`
       );
 
-      if (!webcamRef.current) return;
-
-      const img = tf.browser.fromPixels(
-        webcamRef.current.video as HTMLVideoElement
-      );
-      const input = tf.cast(
-        tf.sub(tf.div(tf.expandDims(img), 127.5), 1),
-        "bool"
-      );
+      const image = document.createElement("img");
+      image.src = capturedImage;
+      const inputTensor = tf.expandDims(tf.browser.fromPixels(image));
 
       // Run inference and get output tensors
-      let outputTensor = tfliteModel.predict(input).dataSync();
+      let outputTensor = tfliteModel.predict(inputTensor).dataSync();
 
       let maxIndex = -1;
       let maxConfidence = 0;
@@ -112,21 +104,9 @@ const WebcamWControls = () => {
         13: 10,
       };
 
-      setTimeout(() => {
-        setCapturedImage(null);
-        router.push(
-          `/local-guides/category/${redirectMap[maxIndex] || 0}`
-        );
-      }, 3000);
-    }
-    if (capturedImage) classify();
+      router.push(`/local-guides/category/${redirectMap[maxIndex] || 0}`);
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [capturedImage]);
-
-  useEffect(() => {
-    if (capturedImage) {
-      setTimeout(() => setCapturedImage(null), 3000);
-    }
   }, [capturedImage]);
 
   return (
@@ -145,7 +125,7 @@ const WebcamWControls = () => {
         {/* Viewfinder */}
         <Webcam
           audio={false}
-          ref={webcamRef as any}
+          ref={webcamRef}
           height={clientWidth}
           width={clientWidth}
           screenshotFormat="image/jpeg"
@@ -169,7 +149,7 @@ const WebcamWControls = () => {
           {/* Switch camera */}
           <IconButton
             onClick={cycleCam}
-            disabled={clientCameras.length == 1}
+            disabled={clientCameras.length === 1}
             className="text-white"
           >
             <MaterialSymbol icon="cameraswitch" />
@@ -179,9 +159,12 @@ const WebcamWControls = () => {
           <Button
             variant="contained"
             onClick={() => {
-              setCapturedImage(() => {
-                if (webcamRef.current) return webcamRef.current.getScreenshot();
-              });
+              setCapturedImage(
+                webcamRef.current?.getScreenshot({
+                  width: DEFAULT_WEBCAM_SIZE,
+                  height: DEFAULT_WEBCAM_SIZE,
+                }) || null
+              );
             }}
           >
             <MaterialSymbol icon="camera" />
