@@ -1,7 +1,4 @@
-// MUI Components
 import { Button, Paper, Stack, Typography } from "@mui/material";
-
-// Types
 import { RecycLensPage } from "@utils/types/common";
 import Link from "next/link";
 

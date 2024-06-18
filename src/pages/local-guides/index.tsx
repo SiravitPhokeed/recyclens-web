@@ -1,38 +1,26 @@
-// External libraries
-import { AnimatePresence, motion } from "framer-motion";
-
-import React, { useEffect, useState } from "react";
-
-import { GetStaticProps } from "next";
-import Link from "next/link";
-
-// MUI Components
+import MaterialSymbol from "@components/MaterialSymbol";
 import {
+  Divider,
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   Stack,
-  Typography,
   TextField,
-  InputAdornment,
-  Divider,
+  Typography,
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
-
-// Components
-import MaterialSymbol from "@components/MaterialSymbol";
-
-// Backend
 import { getCategoriesForRegion } from "@utils/backend/categories";
 import { getRegions } from "@utils/backend/regions";
-
-// Types
 import { CategoryListItem } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
 import { Region } from "@utils/types/regions";
+import { AnimatePresence, motion } from "framer-motion";
+import { GetStaticProps } from "next";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// Page
 const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
   const [location, setLocation] = useState<number>(
     regions.length > 0 ? regions[0].id : 0,

@@ -1,7 +1,4 @@
-// Supabase
 import { supabase } from "@utils/supabase-client";
-
-// Types
 import { CategoryDetails, CategoryListItem } from "@utils/types/categories";
 import { RecycLensBackendReturn } from "@utils/types/common";
 

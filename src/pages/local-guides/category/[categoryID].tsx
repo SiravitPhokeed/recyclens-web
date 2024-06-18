@@ -1,24 +1,12 @@
-// External libraries
-import { GetStaticPaths, GetStaticProps } from "next";
-
-// Material UI Components
-import { Paper, Stack, Typography } from "@mui/material";
-
-// Backend
-import { getCategoryDetails } from "@utils/backend/categories";
-
-// Components
 import Markdown from "@components/Markdown";
 import MaterialSymbol from "@components/MaterialSymbol";
-
-// Types
+import { Paper, Stack, Typography } from "@mui/material";
+import { getCategoryDetails } from "@utils/backend/categories";
+import { formatSupabaseTime } from "@utils/helpers/datetime";
 import { CategoryDetails } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
+import { GetStaticPaths, GetStaticProps } from "next";
 
-// Helpers
-import { formatSupabaseTime } from "@utils/helpers/datetime";
-
-// Components
 const SummarySection = ({
   categoryDetails,
 }: {
@@ -223,7 +211,6 @@ const DonationSection = ({
   </Stack>
 );
 
-// Page
 const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
   categoryDetails,
 }) => {

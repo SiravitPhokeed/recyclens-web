@@ -1,11 +1,7 @@
-// Material UI Components
 import WebcamWControls from "@components/WebcamWControls";
 import { Stack, Typography } from "@mui/material";
-
-// Types
 import { RecycLensPage } from "@utils/types/common";
 
-// Page
 const Scan: RecycLensPage = () => {
   return (
     <Stack>

@@ -1,4 +1,3 @@
-// Modules
 import Document, { Head, Html, Main, NextScript } from "next/document";
 
 class RecycLensDocument extends Document {

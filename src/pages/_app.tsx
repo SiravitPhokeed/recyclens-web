@@ -1,27 +1,16 @@
-// External libraries
+import Layout from "@components/Layout";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import type { AppProps } from "next/app";
-import { Grandstander, Rubik, Sarabun } from "next/font/google";
-import { useMemo } from "react";
-
-// Material UI
 import { createTheme, useMediaQuery } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeOptions, ThemeProvider } from "@mui/material/styles";
-
-// Components
-import Layout from "@components/Layout";
-
-// Stylesheets
-import "../styles/globals.css";
-
-// Types
-import { RecycLensPage } from "@utils/types/common";
-
-// Utils
 import createEmotionCache from "@utils/emotion";
 import getDesignTokens from "@utils/theme";
+import { RecycLensPage } from "@utils/types/common";
 import { MotionConfig } from "framer-motion";
+import type { AppProps } from "next/app";
+import { Grandstander, Rubik, Sarabun } from "next/font/google";
+import { useMemo } from "react";
+import "../styles/globals.css";
 
 // Fonts
 const bodyFontEN = Rubik({ subsets: ["latin"] });

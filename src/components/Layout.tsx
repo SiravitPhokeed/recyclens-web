@@ -1,9 +1,4 @@
-// External libraries
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { ReactNode } from "react";
-
-// Material UI
+import MaterialSymbol from "@components/MaterialSymbol";
 import {
   AppBar,
   BottomNavigation,
@@ -13,13 +8,11 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
-// Components
-import MaterialSymbol from "@components/MaterialSymbol";
-
-// Types
 import { RecycLensPage } from "@utils/types/common";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { ReactNode } from "react";
 
 const Layout = ({
   appBar,
@@ -115,7 +108,7 @@ const Layout = ({
                   navItems
                     .slice(1) // Ignore Home
                     .findIndex((navItem) =>
-                      router.pathname.startsWith(navItem.href)
+                      router.pathname.startsWith(navItem.href),
                     ) + 1
             }
           >

@@ -1,12 +1,4 @@
-// External libraries
-import * as tf from "@tensorflow/tfjs-core";
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { RefObject, useEffect, useReducer, useRef, useState } from "react";
-import Webcam from "react-webcam";
-
-// Material UI
+import MaterialSymbol from "@components/MaterialSymbol";
 import {
   Box,
   Button,
@@ -15,9 +7,12 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-// Components
-import MaterialSymbol from "@components/MaterialSymbol";
+import * as tf from "@tensorflow/tfjs-core";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { RefObject, useEffect, useReducer, useRef, useState } from "react";
+import Webcam from "react-webcam";
 
 const DEFAULT_WEBCAM_SIZE = 300;
 const MAX_WEBCAM_SIZE = 576;
@@ -30,7 +25,7 @@ const WebcamWControls = () => {
   const [clientWidth, setClientWidth] = useState(DEFAULT_WEBCAM_SIZE);
   useEffect(
     () => setClientWidth(Math.min(window.innerWidth, MAX_WEBCAM_SIZE)),
-    []
+    [],
   );
 
   // List of the available cameras on the client device
@@ -40,22 +35,22 @@ const WebcamWControls = () => {
       if (navigator.mediaDevices.enumerateDevices)
         setClientCameras(
           (await navigator.mediaDevices.enumerateDevices()).filter(
-            (device) => device.kind === "videoinput"
-          )
+            (device) => device.kind === "videoinput",
+          ),
         );
     }
     getAndSetCameras();
   }, []);
   const [currentCamIdx, cycleCam] = useReducer(
     (state: number) => (state == clientCameras.length - 1 ? 0 : state + 1),
-    0
+    0,
   );
 
   // Mirror the viewfinder
   // (some webcams don’t automatically mirror)
   const [mirrored, toggleMirrored] = useReducer(
     (state: boolean) => !state,
-    false
+    false,
   );
 
   // Captured image
@@ -68,7 +63,7 @@ const WebcamWControls = () => {
 
     (async () => {
       const tfliteModel = await (window as any).tflite.loadTFLiteModel(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/models/recyclens_model_v2.tflite`
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/models/recyclens_model_v2.tflite`,
       );
 
       const image = document.createElement("img");
@@ -163,7 +158,7 @@ const WebcamWControls = () => {
                 webcamRef.current?.getScreenshot({
                   width: DEFAULT_WEBCAM_SIZE,
                   height: DEFAULT_WEBCAM_SIZE,
-                }) || null
+                }) || null,
               );
             }}
           >

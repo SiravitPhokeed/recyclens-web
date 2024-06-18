@@ -1,7 +1,4 @@
-// Supabase
 import { supabase } from "@utils/supabase-client";
-
-// Types
 import { RecycLensBackendReturn } from "@utils/types/common";
 import { Region } from "@utils/types/regions";
 
