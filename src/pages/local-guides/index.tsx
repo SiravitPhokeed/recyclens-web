@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import React, { useEffect, useState } from "react";
 
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import Link from "next/link";
 
 // MUI Components
@@ -155,14 +155,10 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data: regions } = await getRegions();
 
-  return {
-    props: {
-      regions,
-    },
-  };
+  return { props: { regions }, revalidate: 3600 };
 };
 
 LocalGuides.appBar = { title: "Local guides", backGoesTo: "/" };

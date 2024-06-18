@@ -1,5 +1,5 @@
 // External libraries
-import { GetServerSideProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 
 // Material UI Components
 import { Paper, Stack, Typography } from "@mui/material";
@@ -7,13 +7,13 @@ import { Paper, Stack, Typography } from "@mui/material";
 // Backend
 import { getCategoryDetails } from "@utils/backend/categories";
 
-// Componetns
+// Components
 import Markdown from "@components/Markdown";
 import MaterialSymbol from "@components/MaterialSymbol";
 
 // Types
-import { RecycLensPage } from "@utils/types/common";
 import { CategoryDetails } from "@utils/types/categories";
+import { RecycLensPage } from "@utils/types/common";
 
 // Helpers
 import { formatSupabaseTime } from "@utils/helpers/datetime";
@@ -254,17 +254,20 @@ const CategoryGuide: RecycLensPage<{ categoryDetails: CategoryDetails }> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  if (!params?.categoryID) return { notFound: true, props: {} };
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  if (!params?.categoryID) return { notFound: true };
 
   const { data: categoryDetails } = await getCategoryDetails(
-    Number(params.categoryID)
+    Number(params.categoryID),
   );
 
-  return {
-    props: { categoryDetails },
-  };
+  return { props: { categoryDetails }, revalidate: 3600 };
 };
+
+export const getStaticPaths: GetStaticPaths = async () => ({
+  paths: [],
+  fallback: "blocking",
+});
 
 CategoryGuide.appBar = {
   title: "Details",
