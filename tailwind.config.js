@@ -49,8 +49,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ["-apple-system", "BlinkMacSystemFont", "Rubik", "Sarabun"],
-      display: ["Grandstander", "-apple-system-headline", "BlinkMacSystemFont"],
+      sans: "var(--font-body)",
+      display: "var(--font-display)",
     },
     boxShadow: {
       DEFAULT:

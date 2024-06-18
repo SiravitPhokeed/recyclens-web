@@ -1,57 +1,56 @@
-// Material UI
 import { PaletteMode } from "@mui/material";
 import { ThemeOptions } from "@mui/system/createTheme";
 
-const sansFont = "-apple-system, BlinkMacSystemFont, Rubik, Sarabun";
-const displayFont = "Grandstander, -apple-system-headline, BlinkMacSystemFont";
+const BODY_FONT = "var(--font-body)";
+const DISPLAY_FONT = "var(--font-display)";
 
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   typography: {
-    fontFamily: sansFont,
+    fontFamily: BODY_FONT,
     h1: {
       fontSize: "3.5625rem",
       fontWeight: 400,
-      fontFamily: displayFont,
+      fontFamily: DISPLAY_FONT,
     },
     h2: {
       fontSize: "2rem",
       fontWeight: 400,
-      fontFamily: displayFont,
+      fontFamily: DISPLAY_FONT,
     },
     h3: {
       fontSize: "1.75rem",
       fontWeight: 400,
-      fontFamily: displayFont,
+      fontFamily: DISPLAY_FONT,
     },
     h4: {
       fontSize: "1.5rem",
       fontWeight: 400,
-      fontFamily: displayFont,
+      fontFamily: DISPLAY_FONT,
     },
     h5: {
       fontSize: "1.375rem",
       fontWeight: 400,
-      fontFamily: displayFont,
+      fontFamily: DISPLAY_FONT,
     },
     h6: {
       fontSize: "1em",
       fontWeight: 500,
-      fontFamily: displayFont,
+      fontFamily: DISPLAY_FONT,
     },
     subtitle1: {
       fontSize: "1.5rem",
-      fontFamily: displayFont,
-      color: mode == "light" ? "#486641" : "#7ABB6C",
+      fontFamily: DISPLAY_FONT,
+      color: mode === "light" ? "#486641" : "#7ABB6C",
     },
     button: {
       fontSize: "1rem",
-      fontFamily: displayFont,
+      fontFamily: DISPLAY_FONT,
       textTransform: "none",
     },
   },
   palette: {
     mode,
-    ...(mode == "light"
+    ...(mode === "light"
       ? {
           primary: {
             main: "#486641",
