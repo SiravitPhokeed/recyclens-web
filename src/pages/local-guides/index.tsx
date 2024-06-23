@@ -1,41 +1,29 @@
-// External libraries
-import { AnimatePresence, motion } from "framer-motion";
-
-import React, { useEffect, useState } from "react";
-
-import { GetServerSideProps } from "next";
-import Link from "next/link";
-
-// MUI Components
+import MaterialSymbol from "@components/MaterialSymbol";
 import {
+  Divider,
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   Stack,
-  Typography,
   TextField,
-  InputAdornment,
-  Divider,
+  Typography,
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
-
-// Components
-import MaterialSymbol from "@components/MaterialSymbol";
-
-// Backend
 import { getCategoriesForRegion } from "@utils/backend/categories";
 import { getRegions } from "@utils/backend/regions";
-
-// Types
 import { CategoryListItem } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
 import { Region } from "@utils/types/regions";
+import { AnimatePresence, motion } from "framer-motion";
+import { GetStaticProps } from "next";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// Page
 const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
   const [location, setLocation] = useState<number>(
-    regions.length > 0 ? regions[0].id : 0
+    regions.length > 0 ? regions[0].id : 0,
   );
 
   const [categories, setCategories] = useState<CategoryListItem[]>([]);
@@ -93,7 +81,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
       <Stack spacing={2} className="p-4">
         <Typography variant="h2">By category</Typography>
         <Stack>
-          <AnimatePresence exitBeforeEnter>
+          <AnimatePresence mode="wait">
             {categories.map((category, idx) => (
               <motion.div
                 key={[category.regionID, category.id].join("-")}
@@ -103,7 +91,10 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
               >
                 {/* Category list item */}
                 <ButtonBase className="block w-full py-2">
-                  <Link href={`/local-guides/category/${category.id}`}>
+                  <Link
+                    className="no-underline text-inherit"
+                    href={`/local-guides/category/${category.id}`}
+                  >
                     <Stack
                       direction="row"
                       spacing={2}
@@ -116,8 +107,8 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
                         {/* Icons */}
                         <Stack direction="row" spacing={0.5}>
                           <div
-                            className="border-text-primary h-4 w-4 rounded-full border-2
-                              dark:border-solid"
+                            className="border-text-primary h-4 w-4 rounded-full
+                              border-2 dark:border-solid"
                             style={{ backgroundColor: category.binColor }}
                           />
                           {category.shouldRepair && (
@@ -152,14 +143,10 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data: regions } = await getRegions();
 
-  return {
-    props: {
-      regions,
-    },
-  };
+  return { props: { regions }, revalidate: 3600 };
 };
 
 LocalGuides.appBar = { title: "Local guides", backGoesTo: "/" };

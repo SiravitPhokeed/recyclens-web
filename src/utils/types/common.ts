@@ -1,4 +1,3 @@
-// External libraries
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextPage } from "next";
 

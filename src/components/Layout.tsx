@@ -1,8 +1,4 @@
-// External libraries
-import { useRouter } from "next/router";
-import { ReactNode } from "react";
-
-// Material UI
+import MaterialSymbol from "@components/MaterialSymbol";
 import {
   AppBar,
   BottomNavigation,
@@ -12,14 +8,11 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
-// Components
-import MaterialSymbol from "@components/MaterialSymbol";
-import Link from "@components/Link";
-
-// Types
 import { RecycLensPage } from "@utils/types/common";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { ReactNode } from "react";
 
 const Layout = ({
   appBar,
@@ -50,7 +43,7 @@ const Layout = ({
 
   return (
     <AnimatePresence
-      exitBeforeEnter
+      mode="wait"
       initial={false}
       onExitComplete={() => window.scrollTo(0, 0)}
     >
@@ -115,7 +108,7 @@ const Layout = ({
                   navItems
                     .slice(1) // Ignore Home
                     .findIndex((navItem) =>
-                      router.pathname.startsWith(navItem.href)
+                      router.pathname.startsWith(navItem.href),
                     ) + 1
             }
           >

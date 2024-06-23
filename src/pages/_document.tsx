@@ -1,5 +1,4 @@
-// Modules
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Head, Html, Main, NextScript } from "next/document";
 
 class RecycLensDocument extends Document {
   render() {
@@ -17,9 +16,9 @@ class RecycLensDocument extends Document {
             media="(prefers-color-scheme: dark)"
           />
           {/* eslint-disable @next/next/no-sync-scripts */}
-          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core" />
-          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-cpu" />
-          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js" />
+          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@4.10.0" />
+          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-cpu@4.10.0" />
+          <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite@0.0.1-alpha.9/dist/tf-tflite.min.js" />
         </Head>
         <body>
           <Main />

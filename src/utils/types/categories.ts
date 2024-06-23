@@ -1,15 +1,10 @@
-// Related types
-import { Bin, DBBin } from "@utils/types/bins";
-import { DBRegion } from "@utils/types/regions";
-
-// Frontend types
 export type CategoryListItem = {
   id: number;
   name: string;
   regionID: number;
   binColor: string;
-  shouldRepair?: boolean;
-  canDonate?: boolean;
+  shouldRepair: boolean;
+  canDonate: boolean;
 };
 
 export type CategoryDetails = {
@@ -18,48 +13,27 @@ export type CategoryDetails = {
   regionCity: string;
   preparation: {
     info: string;
-    restrictions?: string;
-    shouldRepair?: boolean;
+    restrictions: string | null;
+    shouldRepair: boolean;
   };
   bin: {
     name: string;
-    localName: string;
+    localName: string | null;
     hexColor: string;
-    image?: string;
+    image: string | null;
   };
   collection: {
-    allowCollect?: boolean;
-    times?: {
-      start?: string;
-      end?: string;
-      lastTruck?: string;
+    allowCollect: boolean;
+    times: {
+      start: string | null;
+      end: string | null;
+      lastTruck: string | null;
     };
-    binInfo?: string;
-    categoryInfo?: string;
+    binInfo: string | null;
+    categoryInfo: string | null;
   };
   donate: {
-    canDonate?: boolean;
-    info?: string;
+    canDonate: boolean;
+    info: string | null;
   };
-};
-
-// Backend types
-export type DBCategory = {
-  id: number;
-  created_at: string;
-  region: number;
-  name: string;
-  preparation: string;
-  restrictions?: string;
-  bin: number;
-  allow_collect: boolean;
-  collect_info?: string;
-  should_repair: boolean;
-  can_donate: boolean;
-  donate_info?: string;
-};
-
-export type DBJoinedCategory = Omit<DBCategory, "region" | "bin"> & {
-  region: DBRegion;
-  bin: DBBin;
 };

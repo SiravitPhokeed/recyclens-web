@@ -1,10 +1,6 @@
-// Frontend types
 export type Region = {
   id: number;
   code: string;
   city: string;
-  country?: string;
+  country: string | null;
 };
-
-// Backend types
-export type DBRegion = Region & { created_at: string };
