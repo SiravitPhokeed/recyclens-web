@@ -4,10 +4,10 @@ Visit [preview](https://recyclens.vercel.app/).
 
 **Development**:
 ```
-npm run dev
+pnpm run dev
 ```
 
 **Build and start**:
 ```
-npm run build; npm start
+pnpm run build; pnpm start
 ```
