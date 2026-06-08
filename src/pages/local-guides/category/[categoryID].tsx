@@ -2,7 +2,7 @@ import Markdown from "@components/Markdown";
 import MaterialSymbol from "@components/MaterialSymbol";
 import { Paper, Stack, Typography } from "@mui/material";
 import { getCategoryDetails } from "@utils/backend/categories";
-import { formatSupabaseTime } from "@utils/helpers/datetime";
+import { formatNeonTime } from "@utils/helpers/datetime";
 import { CategoryDetails } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -163,14 +163,14 @@ const CollectionSection = ({
       <Typography>
         Set out bags at{" "}
         <strong>
-          {formatSupabaseTime(collection.times.start)}-
-          {formatSupabaseTime(collection.times.end)}
+          {formatNeonTime(collection.times.start)}-
+          {formatNeonTime(collection.times.end)}
         </strong>
         .{" "}
         {collection.times?.lastTruck && (
           <>
             Last truck leaves at{" "}
-            {formatSupabaseTime(collection.times.lastTruck)}.
+            {formatNeonTime(collection.times.lastTruck)}.
           </>
         )}
       </Typography>

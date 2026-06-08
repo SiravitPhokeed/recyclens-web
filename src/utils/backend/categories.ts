@@ -1,72 +1,82 @@
-import { supabase } from "@utils/supabase-client";
-import { CategoryDetails, CategoryListItem } from "@utils/types/categories";
+import { neon } from "@neondatabase/serverless";
+import { CategoryDetails } from "@utils/types/categories";
 import { RecycLensBackendReturn } from "@utils/types/common";
-
-export async function getCategoriesForRegion(
-  regionID: number,
-): Promise<RecycLensBackendReturn<CategoryListItem[]>> {
-  const { data, error } = await supabase
-    .from("categories")
-    .select("id, name, bin:bins!inner(*), should_repair, can_donate")
-    .match({ region: regionID })
-    .order("name");
-
-  if (error) return { data: null, error };
-  return {
-    data: data.map((category) => ({
-      id: category.id,
-      name: category.name,
-      regionID,
-      binColor: category.bin.hex_color,
-      shouldRepair: category.should_repair,
-      canDonate: category.can_donate,
-    })),
-    error: null,
-  };
-}
 
 export async function getCategoryDetails(
   categoryID: number,
 ): Promise<RecycLensBackendReturn<CategoryDetails>> {
-  const { data, error } = await supabase
-    .from("categories")
-    .select("*, region:regions(city), bin:bins!inner(*)")
-    .match({ id: categoryID })
-    .limit(1)
-    .single();
+  const sql = neon(process.env.NEON_DATABASE_URL!);
+  try {
+    const rows = (await sql`
+      SELECT
+        c.id, c.name, c.preparation, c.restrictions, c.should_repair, c.allow_collect, c.collect_info, c.donate_info, c.can_donate,
+        r.city AS region_city,
+        b.name AS bin_name, b.name_local AS bin_name_local, b.hex_color AS bin_hex_color, b.image AS bin_image,
+        b.collect_start AS bin_collect_start, b.collect_end AS bin_collect_end, b.last_truck AS bin_last_truck
+      FROM categories c
+      JOIN regions r ON c.region = r.id
+      JOIN bins b ON c.bin = b.id
+      WHERE c.id = ${categoryID}
+      LIMIT 1
+    `) as {
+      id: number;
+      name: string;
+      preparation: string;
+      restrictions: string;
+      should_repair: boolean;
+      allow_collect: boolean;
+      collect_info: string;
+      donate_info: string;
+      can_donate: boolean;
+      region_city: string;
+      bin_name: string;
+      bin_name_local: string;
+      bin_hex_color: string;
+      bin_image: string;
+      bin_collect_start: string;
+      bin_collect_end: string;
+      bin_last_truck: string;
+    }[];
 
-  if (error) return { data: null, error };
-  return {
-    data: {
-      id: data.id,
-      name: data.name,
-      regionCity: data.region.city,
+    if (rows.length === 0) {
+      return { data: null, error: new Error("Category not found") };
+    }
+
+    const category = rows[0];
+
+    const data: CategoryDetails = {
+      id: category.id,
+      name: category.name,
+      regionCity: category.region_city,
       preparation: {
-        info: data.preparation,
-        restrictions: data.restrictions,
-        shouldRepair: data.should_repair,
+        info: category.preparation,
+        restrictions: category.restrictions,
+        shouldRepair: category.should_repair,
       },
       bin: {
-        name: data.bin.name,
-        localName: data.bin.name_local,
-        hexColor: data.bin.hex_color,
-        image: data.bin.image,
+        name: category.bin_name,
+        localName: category.bin_name_local,
+        hexColor: category.bin_hex_color,
+        image: category.bin_image,
       },
       collection: {
-        allowCollect: data.allow_collect,
+        allowCollect: category.allow_collect,
         times: {
-          start: data.bin.collect_start,
-          end: data.bin.collect_end,
-          lastTruck: data.bin.last_truck,
+          start: category.bin_collect_start,
+          end: category.bin_collect_end,
+          lastTruck: category.bin_last_truck,
         },
-        binInfo: data.bin.collect_info,
-        categoryInfo: data.collect_info,
+        binInfo: category.collect_info,
+        categoryInfo: category.collect_info,
       },
       donate: {
-        canDonate: data.can_donate,
-        info: data.donate_info,
+        canDonate: category.can_donate,
+        info: category.donate_info,
       },
-    },
-    error: null,
-  };
+    };
+
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
 }

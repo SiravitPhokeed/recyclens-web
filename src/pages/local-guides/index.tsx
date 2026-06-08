@@ -11,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
-import { getCategoriesForRegion } from "@utils/backend/categories";
 import { getRegions } from "@utils/backend/regions";
 import { CategoryListItem } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
@@ -25,17 +24,25 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
   const [location, setLocation] = useState<number>(
     regions.length > 0 ? regions[0].id : 0,
   );
+  const [query, setQuery] = useState("");
 
   const [categories, setCategories] = useState<CategoryListItem[]>([]);
 
   useEffect(() => {
-    async function fasCategories() {
-      const { data, error } = await getCategoriesForRegion(location);
+    async function fetchCategories() {
+      const response = await fetch(`/api/categories?regionID=${location}`);
+      const { data, error } = await response.json();
       if (error) return;
       setCategories(data);
     }
-    fasCategories();
+    fetchCategories();
   }, [location]);
+
+  const filterredCategories = query
+    ? categories.filter((category) =>
+        category.name.toLowerCase().includes(query.toLowerCase()),
+      )
+    : categories;
 
   return (
     <Stack className="overflow-x-hidden">
@@ -74,15 +81,17 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
           label="Search"
           variant="outlined"
           type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
       </Stack>
 
       {/* By category */}
-      <Stack spacing={2} className="p-4">
+      <Stack spacing={2} className="p-4 overflow-hidden">
         <Typography variant="h2">By category</Typography>
         <Stack>
           <AnimatePresence mode="wait">
-            {categories.map((category, idx) => (
+            {filterredCategories.map((category, idx) => (
               <motion.div
                 key={[category.regionID, category.id].join("-")}
                 initial={{ x: -50, opacity: 0 }}
