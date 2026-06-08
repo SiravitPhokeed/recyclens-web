@@ -63,7 +63,7 @@ const WebcamWControls = () => {
 
     (async () => {
       const tfliteModel = await (window as any).tflite.loadTFLiteModel(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/models/recyclens_model_v2.tflite`,
+        "/models/image-classifier.tflite",
       );
 
       const image = document.createElement("img");
