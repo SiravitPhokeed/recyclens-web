@@ -1,9 +1,8 @@
 import Layout from "@components/Layout";
-import { CacheProvider, EmotionCache } from "@emotion/react";
 import { createTheme, useMediaQuery } from "@mui/material";
+import { AppCacheProvider } from "@mui/material-nextjs/v14-pagesRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeOptions, ThemeProvider } from "@mui/material/styles";
-import createEmotionCache from "@utils/emotion";
 import getDesignTokens from "@utils/theme";
 import { RecycLensPage } from "@utils/types/common";
 import { MotionConfig } from "framer-motion";
@@ -20,17 +19,11 @@ const bodyFontTH = Sarabun({
 });
 const displayFontEN = Grandstander({ subsets: ["latin"] });
 
-const clientSideEmotionCache = createEmotionCache();
+function App(
+  props: Omit<AppProps, "Component"> & { Component: RecycLensPage },
+) {
+  const { Component, pageProps } = props;
 
-function App({
-  Component,
-  emotionCache,
-  pageProps,
-}: Omit<AppProps, "Component"> & {
-  Component: RecycLensPage;
-  emotionCache: EmotionCache;
-}) {
-  emotionCache = clientSideEmotionCache;
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = useMemo(
     () =>
@@ -43,14 +36,14 @@ function App({
   return (
     <>
       <MotionConfig reducedMotion="user">
-        <CacheProvider value={emotionCache}>
+        <AppCacheProvider {...props}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Layout appBar={Component.appBar}>
               <Component {...pageProps} />
             </Layout>
           </ThemeProvider>
-        </CacheProvider>
+        </AppCacheProvider>
       </MotionConfig>
       <style jsx global>{`
         :root {
