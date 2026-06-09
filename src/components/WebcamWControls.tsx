@@ -30,17 +30,6 @@ const WebcamWControls = () => {
 
   // List of the available cameras on the client device
   const [clientCameras, setClientCameras] = useState<MediaDeviceInfo[]>([]);
-  useEffect(() => {
-    async function getAndSetCameras() {
-      if (navigator.mediaDevices.enumerateDevices)
-        setClientCameras(
-          (await navigator.mediaDevices.enumerateDevices()).filter(
-            (device) => device.kind === "videoinput",
-          ),
-        );
-    }
-    getAndSetCameras();
-  }, []);
   const [currentCamIdx, cycleCam] = useReducer(
     (state: number) => (state == clientCameras.length - 1 ? 0 : state + 1),
     0,
@@ -130,6 +119,13 @@ const WebcamWControls = () => {
             width: 300,
           }}
           mirrored={mirrored}
+          onUserMedia={async () =>
+            setClientCameras(
+              (await navigator.mediaDevices.enumerateDevices()).filter(
+                (device) => device.kind === "videoinput",
+              ),
+            )
+          }
           className="w-full"
         />
 
