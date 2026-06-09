@@ -1,11 +1,16 @@
 import Layout from "@components/Layout";
-import { createTheme, useMediaQuery } from "@mui/material";
-import { AppCacheProvider } from "@mui/material-nextjs/v14-pagesRouter";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeOptions, ThemeProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  useMediaQuery,
+  type ThemeOptions,
+} from "@mui/material";
+import { AppCacheProvider } from "@mui/material-nextjs/v16-pagesRouter";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import { emotionCache } from "@utils/emotion";
 import getDesignTokens from "@utils/theme";
 import { RecycLensPage } from "@utils/types/common";
-import { MotionConfig } from "framer-motion";
+import { MotionConfig } from "motion/react";
 import type { AppProps } from "next/app";
 import { Grandstander, Rubik, Sarabun } from "next/font/google";
 import { useMemo } from "react";
@@ -19,11 +24,10 @@ const bodyFontTH = Sarabun({
 });
 const displayFontEN = Grandstander({ subsets: ["latin"] });
 
-function App(
-  props: Omit<AppProps, "Component"> & { Component: RecycLensPage },
-) {
-  const { Component, pageProps } = props;
-
+function App({
+  Component,
+  pageProps,
+}: Omit<AppProps, "Component"> & { Component: RecycLensPage }) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = useMemo(
     () =>
@@ -36,16 +40,16 @@ function App(
   return (
     <>
       <MotionConfig reducedMotion="user">
-        <AppCacheProvider {...props}>
+        <AppCacheProvider emotionCache={emotionCache}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
+            <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
             <Layout appBar={Component.appBar}>
               <Component {...pageProps} />
             </Layout>
           </ThemeProvider>
         </AppCacheProvider>
       </MotionConfig>
-      <style jsx global>{`
+      <style>{`
         :root {
           --font-body: -apple-system, BlinkMacSystemFont,
             ${bodyFontEN.style.fontFamily}, ${bodyFontTH.style.fontFamily};

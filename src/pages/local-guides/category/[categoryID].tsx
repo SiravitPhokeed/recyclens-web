@@ -6,16 +6,17 @@ import { formatNeonTime } from "@utils/helpers/datetime";
 import { CategoryDetails } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
 import { GetStaticPaths, GetStaticProps } from "next";
+import type { JSX } from "react/jsx-runtime";
 
 const SummarySection = ({
   categoryDetails,
 }: {
   categoryDetails: CategoryDetails;
 }): JSX.Element => (
-  <Stack direction="row" spacing={1} justifyContent="stretch" className="p-4">
+  <Stack direction="row" spacing={1} className="justify-stretch p-4">
     <Paper className="w-1/3 rounded-lg px-2 py-1">
-      <Stack spacing={1} justifyContent="space-between" alignItems="center">
-        <Typography component="span" alignSelf="flex-start" className="text-sm">
+      <Stack spacing={1} className="items-center justify-between">
+        <Typography component="span" className="self-start text-sm">
           Preparation
         </Typography>
         <MaterialSymbol icon="cleaning_bucket" size="extra-large" />
@@ -25,8 +26,8 @@ const SummarySection = ({
       </Stack>
     </Paper>
     <Paper className="w-1/3 rounded-lg px-2 py-1">
-      <Stack spacing={1} justifyContent="space-between" alignItems="center">
-        <Typography component="span" alignSelf="flex-start" className="text-sm">
+      <Stack spacing={1} className="items-center justify-between">
+        <Typography component="span" className="self-start text-sm">
           Goes in
         </Typography>
         <div
@@ -41,8 +42,8 @@ const SummarySection = ({
       </Stack>
     </Paper>
     <Paper className="w-1/3 rounded-lg px-2 py-1">
-      <Stack spacing={1} justifyContent="space-between" alignItems="center">
-        <Typography component="span" alignSelf="flex-start" className="text-sm">
+      <Stack spacing={1} className="items-center justify-between">
+        <Typography component="span" className="self-start text-sm">
           Set out as
         </Typography>
         <MaterialSymbol icon="circle" size="extra-large" />
@@ -63,11 +64,7 @@ const PreparationSection = ({
 }): JSX.Element => (
   <Stack spacing={2} className="p-4" component="section">
     <Stack direction="row" spacing={1.5}>
-      <MaterialSymbol
-        icon="checklist"
-        size="large"
-        className="text-light-primary dark:text-dark-primary"
-      />
+      <MaterialSymbol icon="checklist" size="large" className="text-primary" />
       <Typography variant="h2">Preparation</Typography>
     </Stack>
 
@@ -94,11 +91,7 @@ const BinSection = ({
 }): JSX.Element => (
   <Stack spacing={2} className="p-4" component="section">
     <Stack direction="row" spacing={1.5}>
-      <MaterialSymbol
-        icon="delete"
-        size="large"
-        className="text-light-primary dark:text-dark-primary"
-      />
+      <MaterialSymbol icon="delete" size="large" className="text-primary" />
       <Typography variant="h2">Garbage bin</Typography>
     </Stack>
 
@@ -108,8 +101,8 @@ const BinSection = ({
       <strong>
         colored{" "}
         <span
-          className="inline-block h-4 w-4 rounded-full
-            dark:border-2 dark:border-solid dark:border-dark-text-primary"
+          className="dark:border-text-primary inline-block h-4 w-4
+            rounded-full dark:border-2 dark:border-solid"
           style={{ backgroundColor: bin.hexColor }}
         />
       </strong>
@@ -137,7 +130,7 @@ const CollectionSection = ({
       <MaterialSymbol
         icon="local_shipping"
         size="large"
-        className="text-light-primary dark:text-dark-primary"
+        className="text-primary"
       />
       <Typography variant="h2">Collection info</Typography>
     </Stack>
@@ -169,8 +162,7 @@ const CollectionSection = ({
         .{" "}
         {collection.times?.lastTruck && (
           <>
-            Last truck leaves at{" "}
-            {formatNeonTime(collection.times.lastTruck)}.
+            Last truck leaves at {formatNeonTime(collection.times.lastTruck)}.
           </>
         )}
       </Typography>
@@ -190,7 +182,7 @@ const DonationSection = ({
       <MaterialSymbol
         icon="volunteer_activism"
         size="large"
-        className="text-light-primary dark:text-dark-primary"
+        className="text-primary"
       />
       <Typography variant="h2">Donation guide</Typography>
     </Stack>

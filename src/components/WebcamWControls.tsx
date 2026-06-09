@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import * as tf from "@tensorflow/tfjs-core";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { RefObject, useEffect, useReducer, useRef, useState } from "react";
@@ -43,7 +43,7 @@ const WebcamWControls = () => {
   );
 
   // Captured image
-  const webcamRef: RefObject<Webcam> = useRef(null);
+  const webcamRef: RefObject<Webcam | null> = useRef(null);
   const [capturedImage, setCapturedImage] = useState<string | null>();
 
   useEffect(() => {
@@ -128,9 +128,8 @@ const WebcamWControls = () => {
         <Stack
           direction="row"
           spacing={1}
-          justifyContent="center"
-          className="h-30 absolute bottom-0 w-full bg-gradient-to-t
-            from-[#00000080] to-transparent py-2"
+          className="h-14 absolute bottom-0 w-full justify-center
+            bg-linear-to-t from-[#00000080] to-transparent py-2"
         >
           {/* Switch camera */}
           <IconButton
@@ -173,9 +172,9 @@ const WebcamWControls = () => {
             >
               <Image
                 src={capturedImage}
-                layout="fill"
-                objectFit="contain"
                 alt="Captured image of trash."
+                fill
+                className="object-contain"
               />
             </motion.div>
           )}

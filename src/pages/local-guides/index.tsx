@@ -15,7 +15,7 @@ import { getRegions } from "@utils/backend/regions";
 import { CategoryListItem } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
 import { Region } from "@utils/types/regions";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -71,12 +71,14 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
         </FormControl>
         <TextField
           id="outlined-basic"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <MaterialSymbol icon="search" />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <MaterialSymbol icon="search" />
+                </InputAdornment>
+              ),
+            },
           }}
           label="Search"
           variant="outlined"
@@ -87,7 +89,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
       </Stack>
 
       {/* By category */}
-      <Stack spacing={2} className="p-4 overflow-hidden">
+      <Stack spacing={2} className="overflow-hidden p-4">
         <Typography variant="h2">By category</Typography>
         <Stack>
           <AnimatePresence mode="wait">
@@ -101,15 +103,19 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
                 {/* Category list item */}
                 <ButtonBase className="block w-full py-2">
                   <Link
-                    className="no-underline text-inherit"
+                    className="text-inherit no-underline"
                     href={`/local-guides/category/${category.id}`}
                   >
                     <Stack
                       direction="row"
                       spacing={2}
-                      justifyContent="space-between"
+                      className="justify-between"
                     >
-                      <Stack direction="row" spacing={1} alignItems="center">
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        className="items-center"
+                      >
                         {/* Label */}
                         <Typography variant="body1">{category.name}</Typography>
 
@@ -124,16 +130,14 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
                             <MaterialSymbol
                               icon="handyman"
                               size="small"
-                              className="text-light-secondary-contrast-text
-                                dark:text-dark-secondary-contrast-text"
+                              className="text-secondary-contrast-text"
                             />
                           )}
                           {category.canDonate && (
                             <MaterialSymbol
                               icon="volunteer_activism"
                               size="small"
-                              className="text-light-secondary-contrast-text
-                                dark:text-dark-secondary-contrast-text"
+                              className="text-secondary-contrast-text"
                             />
                           )}
                         </Stack>

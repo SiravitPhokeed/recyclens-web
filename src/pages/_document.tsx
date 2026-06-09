@@ -2,7 +2,8 @@ import {
   documentGetInitialProps,
   DocumentHeadTags,
   type DocumentHeadTagsProps,
-} from "@mui/material-nextjs/v14-pagesRouter";
+} from "@mui/material-nextjs/v16-pagesRouter";
+import { emotionCache } from "@utils/emotion";
 import {
   Head,
   Html,
@@ -41,7 +42,7 @@ function RecycLensDocument(props: DocumentProps & DocumentHeadTagsProps) {
 }
 
 RecycLensDocument.getInitialProps = async (ctx: DocumentContext) => {
-  const finalProps = await documentGetInitialProps(ctx);
+  const finalProps = await documentGetInitialProps(ctx, { emotionCache });
   return finalProps;
 };
 
