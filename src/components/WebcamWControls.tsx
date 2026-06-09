@@ -59,7 +59,7 @@ const WebcamWControls = () => {
 
   useEffect(() => {
     if (!capturedImage) return;
-    setTimeout(() => setCapturedImage(null), 3000);
+    setTimeout(() => setCapturedImage(null), 5000);
 
     (async () => {
       const tfliteModel = await (window as any).tflite.loadTFLiteModel(
