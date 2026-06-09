@@ -43,7 +43,6 @@ export default async function handler(
 
     res.status(200).json({ data: categories, error: null });
   } catch (error) {
-    console.error("Error fetching categories:", error);
     res
       .status(500)
       .json({ data: null, error: { message: "Internal server error" } });
