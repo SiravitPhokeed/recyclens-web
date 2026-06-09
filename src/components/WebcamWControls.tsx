@@ -71,24 +71,19 @@ const WebcamWControls = () => {
         }
       });
 
-      const redirectMap: { [key: number]: number } = {
-        0: 8,
-        1: 9,
-        2: 5,
-        3: 16,
-        4: 14,
-        5: 11,
-        6: 15,
-        7: 12,
-        8: 7,
-        9: 6,
-        10: 13,
-        11: 4,
-        12: 17,
-        13: 10,
+      // Redirect to category page with the predicted category ID and user
+      // country code
+      const countryResponse = await fetch("https://api.country.is/");
+      const { country } = (await countryResponse.json()) as { country: string };
+      const scanResponse = await fetch(
+        `/api/scan?countryCode=${country}&modelCode=${maxIndex}`,
+      );
+      const { data: categoryID } = (await scanResponse.json()) as {
+        data: number;
+        error: string | null;
       };
 
-      router.push(`/local-guides/category/${redirectMap[maxIndex] || 0}`);
+      router.push(`/local-guides/category/${categoryID}`);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [capturedImage]);

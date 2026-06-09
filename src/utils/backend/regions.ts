@@ -5,8 +5,25 @@ import { Region } from "@utils/types/regions";
 export async function getRegions(): Promise<RecycLensBackendReturn<Region[]>> {
   const sql = neon(process.env.NEON_DATABASE_URL!);
   try {
-    const regions =
-      (await sql`SELECT id, code, city, country FROM regions ORDER BY country`) as Region[];
+    const rows = (await sql`
+        SELECT id, code, city, country, country_code
+        FROM regions
+        ORDER BY country`) as {
+      id: number;
+      code: string;
+      city: string | null;
+      country: string;
+      country_code: string;
+    }[];
+
+    const regions: Region[] = rows.map((row) => ({
+      id: row.id,
+      code: row.code,
+      city: row.city,
+      country: row.country,
+      countryCode: row.country_code,
+    }));
+
     return { data: regions, error: null };
   } catch (error) {
     return { data: [], error: error as Error };
