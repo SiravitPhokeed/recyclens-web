@@ -14,7 +14,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { MotionConfig } from "motion/react";
 import type { AppProps } from "next/app";
 import { Grandstander, Rubik, Sarabun } from "next/font/google";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import "../styles/globals.css";
 
 // Fonts
@@ -37,6 +37,18 @@ function App({
       ),
     [prefersDarkMode],
   );
+
+  useEffect(() => {
+    (async () => {
+      const countryCode = localStorage.getItem("countryCode");
+      if (countryCode) return;
+      const response = await fetch("https://api.country.is/");
+      const { country: ipCountry } = (await response.json()) as {
+        country: string;
+      };
+      localStorage.setItem("countryCode", ipCountry);
+    })();
+  }, []);
 
   return (
     <>

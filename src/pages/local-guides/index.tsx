@@ -21,21 +21,27 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
-  const [location, setLocation] = useState<number>(
-    regions.length > 0 ? regions[0].id : 0,
-  );
+  const [location, setLocation] = useState<number | null>(null);
+  useEffect(() => {
+    if (regions.length === 0) return;
+    const userCountryCode = localStorage.getItem("countryCode");
+    const regionIdx = regions.findIndex(
+      (region) => region.countryCode === userCountryCode,
+    );
+    setLocation(regionIdx !== -1 ? regions[regionIdx].id : regions[0].id);
+  }, [regions]);
+
   const [query, setQuery] = useState("");
 
   const [categories, setCategories] = useState<CategoryListItem[]>([]);
-
   useEffect(() => {
-    async function fetchCategories() {
+    (async () => {
+      if (location === null) return;
       const response = await fetch(`/api/categories?regionID=${location}`);
       const { data, error } = await response.json();
       if (error) return;
       setCategories(data);
-    }
-    fetchCategories();
+    })();
   }, [location]);
 
   const filterredCategories = query
@@ -58,7 +64,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
           <Select
             labelId="location-select-label"
             id="location-select"
-            value={location}
+            value={location || regions[0]?.id}
             label="Location"
             onChange={(e) => setLocation(e.target.value as number)}
           >

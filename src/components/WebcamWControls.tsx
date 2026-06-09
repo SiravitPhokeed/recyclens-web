@@ -73,10 +73,9 @@ const WebcamWControls = () => {
 
       // Redirect to category page with the predicted category ID and user
       // country code
-      const countryResponse = await fetch("https://api.country.is/");
-      const { country } = (await countryResponse.json()) as { country: string };
+      const countryCode = localStorage.getItem("countryCode");
       const scanResponse = await fetch(
-        `/api/scan?countryCode=${country}&modelCode=${maxIndex}`,
+        `/api/scan?countryCode=${countryCode}&modelCode=${maxIndex}`,
       );
       const { data: categoryID } = (await scanResponse.json()) as {
         data: number;
