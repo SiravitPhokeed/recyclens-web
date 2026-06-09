@@ -90,7 +90,9 @@ const WebcamWControls = () => {
   return (
     <>
       <Paper
-        className="relative overflow-hidden rounded-none md:rounded-3xl"
+        square
+        elevation={0}
+        className="relative overflow-hidden md:rounded-3xl"
         style={{ height: clientWidth }}
       >
         {/* Client camera label */}

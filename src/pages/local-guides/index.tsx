@@ -95,16 +95,16 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
       </Stack>
 
       {/* By category */}
-      <Stack spacing={2} className="overflow-hidden p-4">
+      <Stack spacing={2} className="p-4">
         <Typography variant="h2">By category</Typography>
         <Stack>
           <AnimatePresence mode="popLayout">
             {filterredCategories.map((category, idx) => (
               <motion.div
                 key={[idx, category.regionID, category.id].join("-")}
-                initial={{ x: -50, opacity: 0 }}
+                initial={{ x: -12, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 50, opacity: 0 }}
+                exit={{ x: 12, opacity: 0 }}
               >
                 {/* Category list item */}
                 <ButtonBase className="block w-full py-2">
@@ -128,8 +128,8 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
                         {/* Icons */}
                         <Stack direction="row" spacing={0.5}>
                           <div
-                            className="border-text-primary h-4 w-4 rounded-full
-                              border-2 dark:border-solid"
+                            className="border-text-primary h-4 w-4
+                              rounded-full border-2 dark:border-solid"
                             style={{ backgroundColor: category.binColor }}
                           />
                           {category.shouldRepair && (

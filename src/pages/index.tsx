@@ -6,15 +6,17 @@ const Welcome: RecycLensPage = () => {
   return (
     <Stack>
       <Paper
-        className="h-60 rounded-none bg-[url('/images/welcome-light.svg')]!
-          bg-cover bg-bottom p-4 dark:bg-[url('/images/welcome-dark.svg')]!"
+        square
+        elevation={0}
+        className="h-60 bg-[url('/images/welcome-light.svg')]! bg-cover
+          bg-bottom p-4 dark:bg-[url('/images/welcome-dark.svg')]!"
       >
         <Stack>
           <Typography variant="h1">RecycLens</Typography>
           <Typography variant="subtitle1">Recyling. Localized.</Typography>
         </Stack>
       </Paper>
-      <Paper className="rounded-none bg-background p-4">
+      <Paper square className="bg-background p-4">
         <Stack className="mb-6">
           <Typography variant="h2">Point. Tap. Know.</Typography>
           <Typography variant="body1">
@@ -27,7 +29,7 @@ const Welcome: RecycLensPage = () => {
           </Button>
         </Stack>
       </Paper>
-      <Paper className="rounded-none p-4">
+      <Paper square className="p-4">
         <Stack className="mb-6">
           <Typography variant="h2">Recycling for your area.</Typography>
           <Typography variant="body1">

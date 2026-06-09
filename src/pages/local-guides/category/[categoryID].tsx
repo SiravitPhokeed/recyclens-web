@@ -63,7 +63,7 @@ const PreparationSection = ({
   preparation: CategoryDetails["preparation"];
 }): JSX.Element => (
   <Stack spacing={2} className="p-4" component="section">
-    <Stack direction="row" spacing={1.5}>
+    <Stack direction="row" className="space-x-3">
       <MaterialSymbol icon="checklist" size="large" className="text-primary" />
       <Typography variant="h2">Preparation</Typography>
     </Stack>
@@ -90,7 +90,7 @@ const BinSection = ({
   bin: CategoryDetails["bin"];
 }): JSX.Element => (
   <Stack spacing={2} className="p-4" component="section">
-    <Stack direction="row" spacing={1.5}>
+    <Stack direction="row" className="space-x-3">
       <MaterialSymbol icon="delete" size="large" className="text-primary" />
       <Typography variant="h2">Garbage bin</Typography>
     </Stack>
@@ -126,7 +126,7 @@ const CollectionSection = ({
   collection: CategoryDetails["collection"];
 }): JSX.Element => (
   <Stack spacing={2} className="p-4" component="section">
-    <Stack direction="row" spacing={1.5}>
+    <Stack direction="row" className="space-x-3">
       <MaterialSymbol
         icon="local_shipping"
         size="large"
@@ -178,7 +178,7 @@ const DonationSection = ({
   donate: CategoryDetails["donate"];
 }): JSX.Element => (
   <Stack spacing={2} className="p-4" component="section">
-    <Stack direction="row" spacing={1.5}>
+    <Stack direction="row" className="space-x-3">
       <MaterialSymbol
         icon="volunteer_activism"
         size="large"
