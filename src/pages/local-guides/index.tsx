@@ -92,10 +92,10 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
       <Stack spacing={2} className="overflow-hidden p-4">
         <Typography variant="h2">By category</Typography>
         <Stack>
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="popLayout">
             {filterredCategories.map((category, idx) => (
               <motion.div
-                key={[category.regionID, category.id].join("-")}
+                key={[idx, category.regionID, category.id].join("-")}
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: 50, opacity: 0 }}
