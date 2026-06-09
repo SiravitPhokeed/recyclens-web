@@ -17,7 +17,7 @@
     "@mui/material-nextjs": "^9.1.0",
     "@mui/system": "^9.1.0",
     "@neondatabase/serverless": "^1.1.0",
-    "@tensorflow/tfjs-core": "^4.10.0",
+    "@tensorflow/tfjs-core": "4.10.0",
     "motion": "^12.40.0",
     "next": "^16.2.7",
     "react": "^19.2.7",
