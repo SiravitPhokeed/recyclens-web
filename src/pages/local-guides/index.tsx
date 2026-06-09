@@ -11,31 +11,44 @@ import {
   Typography,
 } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
-import { getCategoriesForRegion } from "@utils/backend/categories";
 import { getRegions } from "@utils/backend/regions";
 import { CategoryListItem } from "@utils/types/categories";
 import { RecycLensPage } from "@utils/types/common";
 import { Region } from "@utils/types/regions";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
-  const [location, setLocation] = useState<number>(
-    regions.length > 0 ? regions[0].id : 0,
-  );
+  const [location, setLocation] = useState<number | null>(null);
+  useEffect(() => {
+    if (regions.length === 0) return;
+    const userCountryCode = localStorage.getItem("countryCode");
+    const regionIdx = regions.findIndex(
+      (region) => region.countryCode === userCountryCode,
+    );
+    setLocation(regionIdx !== -1 ? regions[regionIdx].id : regions[0].id);
+  }, [regions]);
+
+  const [query, setQuery] = useState("");
 
   const [categories, setCategories] = useState<CategoryListItem[]>([]);
-
   useEffect(() => {
-    async function fasCategories() {
-      const { data, error } = await getCategoriesForRegion(location);
+    (async () => {
+      if (location === null) return;
+      const response = await fetch(`/api/categories?regionID=${location}`);
+      const { data, error } = await response.json();
       if (error) return;
       setCategories(data);
-    }
-    fasCategories();
+    })();
   }, [location]);
+
+  const filterredCategories = query
+    ? categories.filter((category) =>
+        category.name.toLowerCase().includes(query.toLowerCase()),
+      )
+    : categories;
 
   return (
     <Stack className="overflow-x-hidden">
@@ -51,7 +64,7 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
           <Select
             labelId="location-select-label"
             id="location-select"
-            value={location}
+            value={location || regions[0]?.id}
             label="Location"
             onChange={(e) => setLocation(e.target.value as number)}
           >
@@ -64,16 +77,20 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
         </FormControl>
         <TextField
           id="outlined-basic"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <MaterialSymbol icon="search" />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <MaterialSymbol icon="search" />
+                </InputAdornment>
+              ),
+            },
           }}
           label="Search"
           variant="outlined"
           type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
       </Stack>
 
@@ -81,50 +98,52 @@ const LocalGuides: RecycLensPage<{ regions: Region[] }> = ({ regions }) => {
       <Stack spacing={2} className="p-4">
         <Typography variant="h2">By category</Typography>
         <Stack>
-          <AnimatePresence mode="wait">
-            {categories.map((category, idx) => (
+          <AnimatePresence mode="popLayout">
+            {filterredCategories.map((category, idx) => (
               <motion.div
-                key={[category.regionID, category.id].join("-")}
-                initial={{ x: -50, opacity: 0 }}
+                key={[idx, category.regionID, category.id].join("-")}
+                initial={{ x: -12, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 50, opacity: 0 }}
+                exit={{ x: 12, opacity: 0 }}
               >
                 {/* Category list item */}
                 <ButtonBase className="block w-full py-2">
                   <Link
-                    className="no-underline text-inherit"
+                    className="text-inherit no-underline"
                     href={`/local-guides/category/${category.id}`}
                   >
                     <Stack
                       direction="row"
                       spacing={2}
-                      justifyContent="space-between"
+                      className="justify-between"
                     >
-                      <Stack direction="row" spacing={1} alignItems="center">
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        className="items-center"
+                      >
                         {/* Label */}
                         <Typography variant="body1">{category.name}</Typography>
 
                         {/* Icons */}
                         <Stack direction="row" spacing={0.5}>
                           <div
-                            className="border-text-primary h-4 w-4 rounded-full
-                              border-2 dark:border-solid"
+                            className="border-text-primary h-4 w-4
+                              rounded-full border-2 dark:border-solid"
                             style={{ backgroundColor: category.binColor }}
                           />
                           {category.shouldRepair && (
                             <MaterialSymbol
                               icon="handyman"
                               size="small"
-                              className="text-light-secondary-contrast-text
-                                dark:text-dark-secondary-contrast-text"
+                              className="text-secondary-contrast-text"
                             />
                           )}
                           {category.canDonate && (
                             <MaterialSymbol
                               icon="volunteer_activism"
                               size="small"
-                              className="text-light-secondary-contrast-text
-                                dark:text-dark-secondary-contrast-text"
+                              className="text-secondary-contrast-text"
                             />
                           )}
                         </Stack>

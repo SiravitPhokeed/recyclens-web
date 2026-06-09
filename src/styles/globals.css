@@ -1,11 +1,58 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer theme, base, mui, components, utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @font-face {
   font-family: "Material Symbols Outlined";
   font-style: normal;
   src: url(../../public/fonts/material-symbols.woff2) format("woff2");
+}
+
+@theme {
+  --color-primary: #486641;
+  --color-primary-contrast-text: #ffffff;
+  --color-secondary: #b4cbcc;
+  --color-secondary-contrast-text: #203435;
+  --color-background: #fefcf8;
+  --color-background-paper: #fefcf8;
+  --color-text-primary: #1b1c1a;
+  --color-text-secondary: #454842;
+  --color-text-helper: #757872;
+
+  --font-body: var(--font-body);
+  --font-display: var(--font-display);
+
+  --shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0px 1px 2px rgba(0, 0, 0, 0.3),
+    0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0px 4px 8px 3px rgba(0, 0, 0, 0.15),
+    0px 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0px 6px 10px 4px rgba(0, 0, 0, 0.15),
+    0px 2px 3px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0px 8px 12px 6px rgba(0, 0, 0, 0.15),
+    0px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+@layer theme {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-primary: #7abb6c;
+      --color-primary-contrast-text: #1b3716;
+      --color-secondary: #517e82;
+      --color-secondary-contrast-text: #ffffff;
+      --color-background: #1b1c1a;
+      --color-background-paper: #2c3229;
+      --color-text-primary: #e4e2de;
+      --color-text-secondary: #c6c7c0;
+      --color-text-helper: #8f918b;
+    }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background text-text-primary font-body;
+  }
 }
 
 @layer components {
@@ -25,33 +72,53 @@
     word-wrap: normal;
     direction: ltr;
     -webkit-font-smoothing: antialiased;
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 24;
     overflow: hidden;
   }
 
   .material-symbols--filled {
-    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+    font-variation-settings:
+      "FILL" 1,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 24;
   }
 
   .material-symbols--small {
     font-size: 1rem;
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 16;
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 16;
   }
 
   .material-symbols--large {
     font-size: 2.25rem;
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 36;
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 36;
   }
 
   .material-symbols--extra-large {
     font-size: 4rem;
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 64;
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 64;
   }
 
   .markdown {
-    @apply prose max-w-none font-sans leading-normal text-light-text-primary
-      marker:text-base prose-headings:font-display prose-p:my-2 prose-li:marker:font-display
-      prose-li:marker:text-light-primary dark:prose-invert
-      dark:text-dark-text-primary dark:prose-li:marker:text-dark-primary;
+    @apply text-text-primary prose-a:text-primary
+      prose-li:marker:text-primary prose max-w-none font-sans leading-normal
+      marker:text-base prose-headings:font-display prose-p:my-2
+      prose-li:marker:font-display;
   }
 }

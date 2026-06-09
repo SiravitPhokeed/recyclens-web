@@ -1,5 +1,4 @@
-import { PostgrestError } from "@supabase/supabase-js";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 
 /**
  * NextPage modified to carry additional information about the
@@ -14,4 +13,4 @@ export type RecycLensPage<T = {}> = NextPage<T> & {
 
 export type RecycLensBackendReturn<T> =
   | { data: T; error: null }
-  | { data: null | 0 | []; error: Partial<PostgrestError> };
+  | { data: null | 0 | []; error: Error | { message: string } };

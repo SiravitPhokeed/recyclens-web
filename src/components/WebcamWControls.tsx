@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import * as tf from "@tensorflow/tfjs-core";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { RefObject, useEffect, useReducer, useRef, useState } from "react";
@@ -30,17 +30,6 @@ const WebcamWControls = () => {
 
   // List of the available cameras on the client device
   const [clientCameras, setClientCameras] = useState<MediaDeviceInfo[]>([]);
-  useEffect(() => {
-    async function getAndSetCameras() {
-      if (navigator.mediaDevices.enumerateDevices)
-        setClientCameras(
-          (await navigator.mediaDevices.enumerateDevices()).filter(
-            (device) => device.kind === "videoinput",
-          ),
-        );
-    }
-    getAndSetCameras();
-  }, []);
   const [currentCamIdx, cycleCam] = useReducer(
     (state: number) => (state == clientCameras.length - 1 ? 0 : state + 1),
     0,
@@ -54,16 +43,16 @@ const WebcamWControls = () => {
   );
 
   // Captured image
-  const webcamRef: RefObject<Webcam> = useRef(null);
+  const webcamRef: RefObject<Webcam | null> = useRef(null);
   const [capturedImage, setCapturedImage] = useState<string | null>();
 
   useEffect(() => {
     if (!capturedImage) return;
-    setTimeout(() => setCapturedImage(null), 3000);
+    setTimeout(() => setCapturedImage(null), 5000);
 
     (async () => {
       const tfliteModel = await (window as any).tflite.loadTFLiteModel(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/models/recyclens_model_v2.tflite`,
+        "/models/image-classifier.tflite",
       );
 
       const image = document.createElement("img");
@@ -82,24 +71,18 @@ const WebcamWControls = () => {
         }
       });
 
-      const redirectMap: { [key: number]: number } = {
-        0: 8,
-        1: 9,
-        2: 5,
-        3: 16,
-        4: 14,
-        5: 11,
-        6: 15,
-        7: 12,
-        8: 7,
-        9: 6,
-        10: 13,
-        11: 4,
-        12: 17,
-        13: 10,
+      // Redirect to category page with the predicted category ID and user
+      // country code
+      const countryCode = localStorage.getItem("countryCode");
+      const scanResponse = await fetch(
+        `/api/scan?countryCode=${countryCode}&modelCode=${maxIndex}`,
+      );
+      const { data: categoryID } = (await scanResponse.json()) as {
+        data: number;
+        error: string | null;
       };
 
-      router.push(`/local-guides/category/${redirectMap[maxIndex] || 0}`);
+      router.push(`/local-guides/category/${categoryID}`);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [capturedImage]);
@@ -107,7 +90,9 @@ const WebcamWControls = () => {
   return (
     <>
       <Paper
-        className="relative overflow-hidden rounded-none md:rounded-3xl"
+        square
+        elevation={0}
+        className="relative overflow-hidden md:rounded-3xl"
         style={{ height: clientWidth }}
       >
         {/* Client camera label */}
@@ -130,6 +115,13 @@ const WebcamWControls = () => {
             width: 300,
           }}
           mirrored={mirrored}
+          onUserMedia={async () =>
+            setClientCameras(
+              (await navigator.mediaDevices.enumerateDevices()).filter(
+                (device) => device.kind === "videoinput",
+              ),
+            )
+          }
           className="w-full"
         />
 
@@ -137,9 +129,8 @@ const WebcamWControls = () => {
         <Stack
           direction="row"
           spacing={1}
-          justifyContent="center"
-          className="h-30 absolute bottom-0 w-full bg-gradient-to-t
-            from-[#00000080] to-transparent py-2"
+          className="h-14 absolute bottom-0 w-full justify-center
+            bg-linear-to-t from-[#00000080] to-transparent py-2"
         >
           {/* Switch camera */}
           <IconButton
@@ -182,9 +173,9 @@ const WebcamWControls = () => {
             >
               <Image
                 src={capturedImage}
-                layout="fill"
-                objectFit="contain"
                 alt="Captured image of trash."
+                fill
+                className="object-contain"
               />
             </motion.div>
           )}

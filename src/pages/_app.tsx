@@ -1,15 +1,20 @@
 import Layout from "@components/Layout";
-import { CacheProvider, EmotionCache } from "@emotion/react";
-import { createTheme, useMediaQuery } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeOptions, ThemeProvider } from "@mui/material/styles";
-import createEmotionCache from "@utils/emotion";
+import {
+  createTheme,
+  ThemeProvider,
+  useMediaQuery,
+  type ThemeOptions,
+} from "@mui/material";
+import { AppCacheProvider } from "@mui/material-nextjs/v16-pagesRouter";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import { emotionCache } from "@utils/emotion";
 import getDesignTokens from "@utils/theme";
 import { RecycLensPage } from "@utils/types/common";
-import { MotionConfig } from "framer-motion";
+import { Analytics } from "@vercel/analytics/next";
+import { MotionConfig } from "motion/react";
 import type { AppProps } from "next/app";
 import { Grandstander, Rubik, Sarabun } from "next/font/google";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import "../styles/globals.css";
 
 // Fonts
@@ -20,17 +25,10 @@ const bodyFontTH = Sarabun({
 });
 const displayFontEN = Grandstander({ subsets: ["latin"] });
 
-const clientSideEmotionCache = createEmotionCache();
-
 function App({
   Component,
-  emotionCache,
   pageProps,
-}: Omit<AppProps, "Component"> & {
-  Component: RecycLensPage;
-  emotionCache: EmotionCache;
-}) {
-  emotionCache = clientSideEmotionCache;
+}: Omit<AppProps, "Component"> & { Component: RecycLensPage }) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = useMemo(
     () =>
@@ -40,19 +38,32 @@ function App({
     [prefersDarkMode],
   );
 
+  useEffect(() => {
+    (async () => {
+      const countryCode = localStorage.getItem("countryCode");
+      if (countryCode) return;
+      const response = await fetch("https://api.country.is/");
+      const { country: ipCountry } = (await response.json()) as {
+        country: string;
+      };
+      localStorage.setItem("countryCode", ipCountry);
+    })();
+  }, []);
+
   return (
     <>
       <MotionConfig reducedMotion="user">
-        <CacheProvider value={emotionCache}>
+        <AppCacheProvider emotionCache={emotionCache}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
+            <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
             <Layout appBar={Component.appBar}>
               <Component {...pageProps} />
             </Layout>
           </ThemeProvider>
-        </CacheProvider>
+        </AppCacheProvider>
       </MotionConfig>
-      <style jsx global>{`
+      <Analytics />
+      <style>{`
         :root {
           --font-body: -apple-system, BlinkMacSystemFont,
             ${bodyFontEN.style.fontFamily}, ${bodyFontTH.style.fontFamily};
